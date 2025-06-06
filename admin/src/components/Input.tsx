@@ -1,5 +1,5 @@
+import type { fetchItemsReturn } from '../../../server/src/config/index'
 import { type InputProps, useField, useFetchClient } from '@strapi/strapi/admin'
-import type { Config } from '../../../server/src/config/index'
 
 import { ChangeEvent, useEffect, useState } from 'react'
 import { Combobox, ComboboxOption, Field } from '@strapi/design-system'
@@ -14,7 +14,7 @@ export const Input = (props: InputProps) => {
   const field = useField<string>(props.name)
 
   const [loading, setLoading] = useState<boolean>(true)
-  const [items, setItems] = useState<Awaited<ReturnType<Config['customFields'][number]['fetchItems']>> | undefined>(undefined)
+  const [items, setItems] = useState<fetchItemsReturn | undefined>(undefined)
   const [filter, setFilter] = useState<string>('')
   const debouncedFilter = useDebounce(filter, 1200)
 
@@ -24,12 +24,12 @@ export const Input = (props: InputProps) => {
         try {
           setLoading(true)
           const response = await get(
-            `/generic-custom-fields/${customFieldUID}/values?query=${encodeURIComponent(debouncedFilter)}`,
+            `/generic-custom-fields/${customFieldUID}/items?query=${encodeURIComponent(debouncedFilter)}`,
           )
           setItems(response.data)
         } catch (error) {
         // eslint-disable-next-line no-console
-          console.error(`Error fetching CustomField[${customFieldUID}] values:`, error)
+          console.error(`Error fetching CustomField[${customFieldUID}] items:`, error)
         } finally {
           setLoading(false)
         }
@@ -37,12 +37,12 @@ export const Input = (props: InputProps) => {
         try {
           setLoading(true)
           const response = await get(
-            `/generic-custom-fields/${customFieldUID}/value?id=${encodeURIComponent(field.value)}`,
+            `/generic-custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
           )
           setItems([response.data])
         } catch (error) {
         // eslint-disable-next-line no-console
-          console.error(`Error fetching CustomField[${customFieldUID}] value:`, error)
+          console.error(`Error fetching CustomField[${customFieldUID}] item:`, error)
         } finally {
           setLoading(false)
         }

@@ -11,7 +11,7 @@ export default {
   async register(app: StrapiApp) {
     const { get } = getFetchClient()
 
-    const customFields = await get<Omit<Config['customFields'][number], 'fetchItems'>[]>('/generic-custom-fields/config-custom-fields').then(({ data }) => data)
+    const customFields = await get<Omit<Config['customFields'][number], 'fetchItems'>[]>('/generic-custom-fields/config/custom-fields').then(({ data }) => data)
     
     for (const customField of customFields) {
       const customFieldName = slugify(customField.name, { lower: true })
@@ -38,7 +38,6 @@ export default {
             })),
         },
         options: {
-          // declare options here
           advanced: [
             {
               sectionTitle: {

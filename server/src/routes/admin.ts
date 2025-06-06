@@ -1,7 +1,7 @@
 export default [
   {
     method: 'GET',
-    path: '/config-custom-fields',
+    path: '/config/custom-fields',
     handler: 'admin.configCustomFields',
     config: {
       policies: ['admin::isAuthenticatedAdmin'],
@@ -9,16 +9,16 @@ export default [
   },
   {
     method: 'GET',
-    path: '/:uid/values',
-    handler: 'admin.customFieldValues',
+    path: '/:uid/items',
+    handler: 'admin.customFieldItems',
     config: {
       policies: ['admin::isAuthenticatedAdmin'],
     },
   },
   {
     method: 'GET',
-    path: '/:uid/value',
-    handler: 'admin.customFieldValue',
+    path: '/:uid/item',
+    handler: 'admin.customFieldItem',
     config: {
       policies: ['admin::isAuthenticatedAdmin'],
     },

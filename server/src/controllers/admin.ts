@@ -12,7 +12,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
     return this.getConfigCustomFields()
   },
 
-  async customFieldValues(ctx: Context): Promise<fetchItemsReturn> {
+  async customFieldItems(ctx: Context): Promise<fetchItemsReturn> {
     try {
       const customFields = this.getConfigCustomFields()
       const customField = customFields.find((field) => ctx.params.uid === `plugin::generic-custom-fields.${slugify(field.name, { lower: true })}`)
@@ -33,15 +33,15 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
     }
   },
 
-  async customFieldValue(ctx: Context): Promise<fetchItemReturn> {
+  async customFieldItem(ctx: Context): Promise<fetchItemReturn> {
     try {
       const customFields = this.getConfigCustomFields()
       const customField = customFields.find((field) => ctx.params.uid === `plugin::generic-custom-fields.${slugify(field.name, { lower: true })}`)
       if (!customField) {
         throw new Error(`Custom field ${ctx.params.uid} not found`)
       }
-      const id = ctx.request.query.id as string
-      const externalResult = await customField.fetchItem(id)
+      const value = ctx.request.query.value as string
+      const externalResult = await customField.fetchItem(value)
       if (fetchItemReturnSchema.safeParse(externalResult).success) {
         return externalResult
       } else {
