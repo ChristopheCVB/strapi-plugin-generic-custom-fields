@@ -1,6 +1,44 @@
 {
   "version": "0.0.0",
-  "keywords": [],
+  "strapi": {
+    "kind": "plugin",
+    "name": "strapi-plugin-generic-custom-fields",
+    "displayName": "Generic Custom Fields",
+    "description": "This plugin allows you to easily add custom fields to Strapi."
+  },
+  "name": "strapi-plugin-generic-custom-fields",
+  "description": "This plugin allows you to easily add custom fields to Strapi.",
+  "keywords": [
+    "strapi",
+    "plugin",
+    "custom-fields",
+    "generic-custom-fields"
+  ],
+  "author": {
+    "name": "Christophe Carvalho Vilas-Boas",
+    "url": "https://github.com/ChristopheCVB"
+  },
+  "maintainers": [
+    {
+      "name": "Christophe Carvalho Vilas-Boas",
+      "url": "https://github.com/ChristopheCVB"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Christophe Carvalho Vilas-Boas",
+      "url": "https://github.com/ChristopheCVB"
+    },
+    {
+      "name": "Vivian Grimaux",
+      "url": "https://github.com/wezerg"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields"
+  },
+  "license": "MIT",
   "type": "commonjs",
   "exports": {
     "./package.json": "./package.json",
@@ -66,13 +104,12 @@
     "react-router-dom": "^6.30.1",
     "styled-components": "^6.1.18"
   },
-  "strapi": {
-    "kind": "plugin",
-    "name": "strapi-plugin-generic-custom-fields",
-    "displayName": "Generic Custom Fields",
-    "description": "This plugin allows you to easily add custom fields to Strapi."
+  "engines": {
+    "node": ">=22.0.0"
   },
-  "name": "strapi-plugin-generic-custom-fields",
-  "description": "This plugin allows you to easily add custom fields to Strapi.",
-  "license": "MIT"
+  "packageManager": "pnpm@10.11.1",
+  "volta": {
+    "node": "22.14.0",
+    "pnpm": "10.11.1"
+  }
 }
