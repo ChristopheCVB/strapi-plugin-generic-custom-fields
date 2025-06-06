@@ -1,4 +1,4 @@
-import type { Config } from '../../server/src/config/index'
+import type { Config } from '../../server/src/config'
 import type { StrapiApp } from '@strapi/strapi/admin'
 
 import { getFetchClient } from '@strapi/strapi/admin'
@@ -7,11 +7,18 @@ import { PluginIcon } from './components/PluginIcon'
 import { getTranslation } from './utils/getTranslation'
 import slugify from 'slugify'
 
+type SerializableKeys<T> = {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  [K in keyof T]: T[K] extends Function | Promise<unknown> ? never : K
+}[keyof T]
+
+type PickSerializable<T> = Pick<T, SerializableKeys<T>>
+
 export default {
   async register(app: StrapiApp) {
     const { get } = getFetchClient()
 
-    const customFields = await get<Omit<Config['customFields'][number], 'fetchItems'>[]>('/generic-custom-fields/config/custom-fields').then(({ data }) => data)
+    const customFields = await get<PickSerializable<Config['customFields'][number]>[]>('/generic-custom-fields/config/custom-fields').then(({ data }) => data)
     
     for (const customField of customFields) {
       const customFieldName = slugify(customField.name, { lower: true })
