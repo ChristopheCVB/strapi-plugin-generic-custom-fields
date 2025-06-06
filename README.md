@@ -1,8 +1,27 @@
-# Strapi Plugin Generic Custom Fields
-This plugin allows you to easily add custom fields to Strapi.
+<div align="center" width="150px">
+  <img style="width: 150px; height: auto;" src="public/assets/logo.png" alt="Logo - Strapi Plugin Generic Custom Fields" />
+</div>
+<div align="center">
+  <h1>Strapi v5 - Plugin Generic Custom Fields</h1>
+  <p>Powerful Strapi Plugin to easily create Custom Fields</p>
+  <a href="https://www.npmjs.org/package/strapi-plugin-generic-custom-fields">
+    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/ChristopheCVB/strapi-plugin-generic-custom-fields?label=npm&logo=npm">
+  </a>
+  <a href="https://www.npmjs.org/package/strapi-plugin-generic-custom-fields">
+    <img src="https://img.shields.io/npm/dm/strapi-plugin-generic-custom-fields.svg" alt="Monthly download on NPM" />
+  </a>
+</div>
+
+---
+
+<div style="margin: 20px 0" align="center">
+  <img style="width: 100%; height: auto;" src="public/assets/preview.png" alt="UI preview" />
+</div>
+
+A plugin for [Strapi Headless CMS](https://github.com/strapi/strapi) that provides a powerful and easy way to add custom fields to your Strapi entities.
 
 ## Features
-- Add custom fields to any entity
+- Add custom fields to entities with a simple configuration.
 
 ### What can it be used for?
 - Create an Enum field with labels
