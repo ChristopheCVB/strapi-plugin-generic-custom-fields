@@ -1,12 +1,13 @@
 import { z } from 'zod'
 
-export const fetchItemReturnSchema = z.object({
+export const itemResponseSchema = z.object({
   value: z.string().min(1),
   label: z.string().min(1),
 })
-export const fetchItemsReturnSchema = z.array(fetchItemReturnSchema)
-export type fetchItemsReturn = z.infer<typeof fetchItemsReturnSchema>
-export type fetchItemReturn = z.infer<typeof fetchItemReturnSchema>
+export const itemsResponseSchema = z.object({
+  items: z.array(itemResponseSchema),
+  // total: z.number().int().min(0).optional(),
+})
 
 const configSchema = z.object({
   customFields: z.object({
@@ -192,12 +193,21 @@ const configSchema = z.object({
       default: z.union([z.literal(4), z.literal(6), z.literal(8), z.literal(12)]),
       isResizable: z.boolean(),
     }).optional(),
-    fetchItems: z.function().args(z.string()).returns(z.union([fetchItemsReturnSchema, z.promise(fetchItemsReturnSchema)])),
-    fetchItem: z.function().args(z.string()).returns(z.union([fetchItemReturnSchema, z.promise(fetchItemReturnSchema)])),
+    searchable: z.boolean().optional(),
+    // paginateItems: z.boolean().optional(),
+    fetchItems: z.function().args(z.object({
+      query: z.string().optional(),
+      // page: z.number().min(1).optional(),
+    })).returns(z.union([itemsResponseSchema, z.promise(itemsResponseSchema)])),
+    fetchItem: z.function().args(z.object({
+      value: z.string(),
+    })).returns(z.union([itemResponseSchema, z.promise(itemResponseSchema)])),
   }).array(),
 })
 
 export type Config = z.infer<typeof configSchema>
+export type ItemsResponse = z.infer<typeof itemsResponseSchema>
+export type ItemResponse = z.infer<typeof itemResponseSchema>
 
 export default {
   default: {

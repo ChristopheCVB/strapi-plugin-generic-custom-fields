@@ -1,6 +1,6 @@
 import type { Context } from 'koa'
 import type { Core } from '@strapi/strapi'
-import { type Config, type fetchItemsReturn, type fetchItemReturn, fetchItemsReturnSchema, fetchItemReturnSchema } from '../config'
+import { type Config, type ItemsResponse, type ItemResponse, itemsResponseSchema, itemResponseSchema } from '../config'
 import slugify from 'slugify'
 
 const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
@@ -8,49 +8,58 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
     return strapi.plugin('generic-custom-fields').config('customFields') as Config['customFields']
   },
 
+  getCustomFieldUID(name: string) {
+    return `plugin::generic-custom-fields.${slugify(name, { lower: true })}`
+  },
+
   configCustomFields() {
     return this.getConfigCustomFields()
   },
 
-  async customFieldItems(ctx: Context): Promise<fetchItemsReturn> {
+  configCustomField(ctx: Context): Config['customFields'][number] {
+    const customFields = this.getConfigCustomFields()
+    const customField = customFields.find((field) => ctx.params.uid === this.getCustomFieldUID(field.name))
+
+    if (!customField) {
+      ctx.throw(404, `Custom field ${ctx.params.uid} not found`)
+    }
+
+    return customField
+  },
+
+  async customFieldItems(ctx: Context): Promise<ItemsResponse> {
     try {
       const customFields = this.getConfigCustomFields()
-      const customField = customFields.find((field) => ctx.params.uid === `plugin::generic-custom-fields.${slugify(field.name, { lower: true })}`)
+      const customField = customFields.find((field) => ctx.params.uid === this.getCustomFieldUID(field.name))
+
       if (!customField) {
-        throw new Error(`Custom field ${ctx.params.uid} not found`)
+        ctx.throw(404, `Custom field ${ctx.params.uid} not found`)
       }
-      const query = ctx.request.query.query as string || ''
-      const externalResults = await customField.fetchItems(query)
-      if (fetchItemsReturnSchema.safeParse(externalResults).success) {
-        return externalResults
-      } else {
-        throw new Error(`Invalid data format returned from fetchItems from custom field ${customField.name}`)
-      }
+    
+      const query = (ctx.request.query.query as string | undefined)
+      // const page = (ctx.request.query.page as string | undefined)
+      return itemsResponseSchema.parse(await customField.fetchItems({
+        query,
+        // page: page ? parseInt(page, 10) : undefined,
+      }))
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(`Error fetching CustomField[${ctx.params.uid}] values:`, error)
-      throw new Error(`Error fetching CustomField[${ctx.params.uid}]`)
+      throw error instanceof Error ? error : new Error(`Error fetching CustomField[${ctx.params.uid}] items: ${error}`)
     }
   },
 
-  async customFieldItem(ctx: Context): Promise<fetchItemReturn> {
+  async customFieldItem(ctx: Context): Promise<ItemResponse> {
     try {
       const customFields = this.getConfigCustomFields()
-      const customField = customFields.find((field) => ctx.params.uid === `plugin::generic-custom-fields.${slugify(field.name, { lower: true })}`)
+      const customField = customFields.find((field) => ctx.params.uid === this.getCustomFieldUID(field.name))
+
       if (!customField) {
-        throw new Error(`Custom field ${ctx.params.uid} not found`)
+        ctx.throw(404, `Custom field ${ctx.params.uid} not found`)
       }
+
       const value = ctx.request.query.value as string
-      const externalResult = await customField.fetchItem(value)
-      if (fetchItemReturnSchema.safeParse(externalResult).success) {
-        return externalResult
-      } else {
-        throw new Error(`Invalid data format returned from fetchItem from custom field ${customField.name}`)
-      }
+      return itemResponseSchema.parse(await customField.fetchItem({ value }))
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(`Error fetching CustomField[${ctx.params.uid}] value:`, error)
-      throw new Error(`Error fetching CustomField[${ctx.params.uid}]`)
+      throw error instanceof Error ? error : new Error(`Error fetching CustomField[${ctx.params.uid}] item: ${error}`)
     }
   },
 })

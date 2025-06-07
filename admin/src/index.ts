@@ -7,13 +7,6 @@ import { PluginIcon } from './components/PluginIcon'
 import { getTranslation } from './utils/getTranslation'
 import slugify from 'slugify'
 
-type SerializableKeys<T> = {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  [K in keyof T]: T[K] extends Function | Promise<unknown> ? never : K
-}[keyof T]
-
-type PickSerializable<T> = Pick<T, SerializableKeys<T>>
-
 export default {
   async register(app: StrapiApp) {
     const { get } = getFetchClient()

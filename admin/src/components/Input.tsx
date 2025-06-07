@@ -1,4 +1,4 @@
-import type { fetchItemsReturn } from '../../../server/src/config/index'
+import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/config'
 import { type InputProps, useField, useFetchClient } from '@strapi/strapi/admin'
 
 import { ChangeEvent, useEffect, useState } from 'react'
@@ -14,46 +14,72 @@ export const Input = (props: InputProps) => {
   const field = useField<string>(props.name)
 
   const [loading, setLoading] = useState<boolean>(true)
-  const [items, setItems] = useState<fetchItemsReturn | undefined>(undefined)
+  // const [page, setPage] = useState<number>(1)
+  // const [totalItems, setTotalItems] = useState<number | undefined>(undefined)
+  const [items, setItems] = useState<ItemsResponse['items'] | undefined>(undefined)
   const [filter, setFilter] = useState<string>('')
-  const debouncedFilter = useDebounce(filter, 1200)
+  const debouncedFilter = useDebounce(filter, 600)
+
+  const [customFieldConfig, setCustomFieldConfig] = useState<PickSerializable<Config['customFields'][number]> | undefined>(undefined)
 
   useEffect(() => {
     const fetchFromAdmin = async () => {
-      if (!props.disabled) {
-        try {
-          setLoading(true)
-          const response = await get(
-            `/generic-custom-fields/${customFieldUID}/items?query=${encodeURIComponent(debouncedFilter)}`,
+      setLoading(true)
+
+      let localCustomFieldConfig = customFieldConfig
+      if (!customFieldConfig) {
+        const response = await get<PickSerializable<Config['customFields'][number]>>(
+          `/generic-custom-fields/config/custom-fields/${customFieldUID}`,
+        )
+        setCustomFieldConfig(response.data)
+        localCustomFieldConfig = response.data
+      }
+
+      if (!items || localCustomFieldConfig!.searchable/* || localCustomFieldConfig!.paginateItems && items.length < totalItems!*/) {
+        if (!props.disabled) {
+          const searchParams = new URLSearchParams()
+          if (localCustomFieldConfig?.searchable && debouncedFilter) {
+            searchParams.set('query', debouncedFilter)
+            // searchParams.set('page', '1')
+          }/* else if (localCustomFieldConfig?.paginateItems) {
+            searchParams.set('page', page.toString())
+          }*/
+          const response = await get<ItemsResponse>(
+            `/generic-custom-fields/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
           )
-          setItems(response.data)
-        } catch (error) {
-        // eslint-disable-next-line no-console
-          console.error(`Error fetching CustomField[${customFieldUID}] items:`, error)
-        } finally {
-          setLoading(false)
-        }
-      } else if (field.value) {
-        try {
-          setLoading(true)
-          const response = await get(
-            `/generic-custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
+          setItems(response.data.items)
+          // if (localCustomFieldConfig?.searchable && debouncedFilter) {
+          //   setTotalItems(response.data.items.length)
+          //   setItems(response.data.items)
+          // } else {
+          //   setTotalItems(response.data.total)
+          //   if (localCustomFieldConfig?.paginateItems && page > 1) {
+          //     setItems(prevItems => [...(prevItems ?? []), ...response.data.items])
+          //   }
+          //   else {
+          //     setItems(response.data.items)
+          //   }
+          // }
+        } else if (field.value) {
+          const response = await get<ItemResponse>(
+            `/generic-custom-fields/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
           )
           setItems([response.data])
-        } catch (error) {
-        // eslint-disable-next-line no-console
-          console.error(`Error fetching CustomField[${customFieldUID}] item:`, error)
-        } finally {
-          setLoading(false)
         }
       }
+
+      setLoading(false)
     }
 
-    fetchFromAdmin()
+    fetchFromAdmin().catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error(`Error fetching items for CustomField[${customFieldUID}]:`, error)
+    })
   }, [
     props.disabled,
     customFieldUID,
     debouncedFilter,
+    // page,
   ])
 
   return (
@@ -65,9 +91,11 @@ export const Input = (props: InputProps) => {
         placeholder={props.placeholder}
         disabled={props.disabled}
         loading={loading}
-        autocomplete={'none'}
+        autocomplete={{ type: 'list', filter: 'contains' }}
         onInputChange={(ev: ChangeEvent<HTMLInputElement>) => setFilter(ev.target.value)}
-        filterValue=''
+        filterValue={customFieldConfig?.searchable ? '' : undefined}
+        // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
+        // onLoadMore={() => setPage(prevPage => prevPage + 1)}
       >
         {
           items?.map(item => {
