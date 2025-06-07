@@ -1,8 +1,8 @@
 {
-  "version": "0.0.2",
+  "version": "0.0.3",
   "strapi": {
     "kind": "plugin",
-    "name": "strapi-plugin-generic-custom-fields",
+    "name": "generic-custom-fields",
     "displayName": "Generic Custom Fields",
     "description": "This plugin allows you to easily add custom fields to Strapi."
   },
