@@ -1,5 +1,5 @@
 <div align="center" width="150px">
-  <img style="width: 150px; height: auto;" src="public/assets/logo.png" alt="Logo - Strapi Plugin Generic Custom Fields" />
+  <img style="width: 150px; height: auto;" src="assets/logo.png" alt="Logo - Strapi Plugin Generic Custom Fields" />
 </div>
 <div align="center">
   <h1>Strapi v5 - Plugin Generic Custom Fields</h1>
@@ -15,7 +15,7 @@
 ---
 
 <div style="margin: 20px 0" align="center">
-  <img style="width: 100%; height: auto;" src="public/assets/preview.png" alt="UI preview" />
+  <img style="width: 100%; height: auto;" src="assets/preview.png" alt="UI preview" />
 </div>
 
 A plugin for [Strapi Headless CMS](https://github.com/strapi/strapi) that provides a powerful and easy way to add custom fields to your Strapi entities.
