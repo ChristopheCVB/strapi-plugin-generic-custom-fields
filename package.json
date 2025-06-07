@@ -1,5 +1,5 @@
 {
-  "version": "0.0.3",
+  "version": "0.0.4",
   "strapi": {
     "kind": "plugin",
     "name": "generic-custom-fields",
