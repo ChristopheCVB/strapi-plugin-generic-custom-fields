@@ -48,9 +48,9 @@ type Config = {
       default: 4 | 6 | 8 | 12; // Default input size.
       isResizable: boolean;    // Whether the input size can be changed.
     };
-    searchable?: boolean; // Whether the custom field is searchable.
-    fetchItems: ({ query: string | undefined }): Item[] | Promise<{ items: Item[] }>; // Function to fetch multiple items.
-    fetchItem: ({ value: string }): Item | Promise<Item>;                 // Function to fetch a single item.
+    searchable?: boolean; // Whether the custom field is searchable (calls fetchItems with query).
+    fetchItems: ({ query: string | undefined }): { items: Item[] } | Promise<{ items: Item[] }>; // Function to fetch multiple items.
+    fetchItem: ({ value: string }): Item | Promise<Item>; // Function to fetch a single item.
   }>,
 }
 type Item = {
@@ -76,7 +76,7 @@ export default () => ({
           description: 'Select a category',
           icon: 'PuzzlePiece',
           inputSize: { default: 6, isResizable: true },
-          fetchItems: ({ query }: { query: string | undefined }) => {
+          fetchItems: ({ query }) => {
             return {
               items: [
                 { value: 'fashion', label: 'Fashion' },
@@ -87,10 +87,10 @@ export default () => ({
                 { value: 'toys', label: 'Toys' },
                 { value: 'books', label: 'Books' },
                 { value: 'automotive', label: 'Automotive' },
-              ].filter((item) => query ? item.label.toLowerCase().includes(query.toLowerCase()) : true)
+              ]
             }
           },
-          fetchItem: ({ value }: { value: string}) => ({ value, label: 'Fashion' }),
+          fetchItem: ({ value }) => ({ value, label: value }),
         },
         { // Async Example (Fetch items from an API)
           name: 'Star Wars Planet',
