@@ -1,20 +1,16 @@
 import type { Config } from '../../server/src/config'
 import type { StrapiApp } from '@strapi/strapi/admin'
 
-import { getFetchClient } from '@strapi/strapi/admin'
 import { PLUGIN_ID } from './pluginId'
+import { Initializer } from './components/Initializer'
 import { PluginIcon } from './components/PluginIcon'
+import { getFetchClient } from '@strapi/strapi/admin'
 import { getTranslation } from './utils/getTranslation'
 import slugify from 'slugify'
 
 export default {
   async register(app: StrapiApp) {
     const { get } = getFetchClient()
-
-    app.registerPlugin({
-      id: PLUGIN_ID,
-      name: 'Generic Custom Fields',
-    })
 
     const customFields = await get<PickSerializable<Config['customFields'][number]>[]>('/generic-custom-fields/config/custom-fields').then(({ data }) => data)
     
@@ -92,6 +88,12 @@ export default {
         },
       })
     }
+
+    app.registerPlugin({
+      id: PLUGIN_ID,
+      initializer: Initializer,
+      name: PLUGIN_ID,
+    })
   },
 
   registerTrads({ locales }: { locales: string[] }) {
