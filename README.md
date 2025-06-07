@@ -32,6 +32,7 @@ A plugin for [Strapi Headless CMS](https://github.com/strapi/strapi) that provid
 - Support pagination for fetching items
 - Support for different field types (text, number, date, etc.)
 - Validation rules for custom fields
+- Any idea? [Open an issue](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues)
 
 ## Usage
 
