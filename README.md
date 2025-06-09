@@ -49,8 +49,8 @@ type Config = {
       isResizable: boolean;    // Whether the input size can be changed.
     };
     searchable?: boolean; // Whether the custom field is searchable (calls fetchItems with query).
-    fetchItems: ({ query: string | undefined }): { items: Item[] } | Promise<{ items: Item[] }>; // Function to fetch multiple items.
-    fetchItem: ({ value: string }): Item | Promise<Item>; // Function to fetch a single item.
+    fetchItems: ({ query: string | undefined }): { items: Item[] } | Promise<{ items: Item[] }>; // Function to fetch multiple items. This function is called on server-side.
+    fetchItem: ({ value: string }): Item | Promise<Item>; // Function to fetch a single item. This function is called on server-side.
   }>,
 }
 type Item = {
