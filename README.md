@@ -92,12 +92,17 @@ export default () => ({
           },
           fetchItem: ({ value }) => ({ value, label: value }),
         },
-        { // Async Example (Fetch items from an API)
+        { // Async Example (Fetch items from any API)
           name: 'Star Wars Planet',
           description: 'Select a Star Wars Planet',
           icon: 'Earth',
           fetchItems: async ({ query }) => {
-            const response = await fetch('https://swapi.info/api/planets')
+            const response = await fetch('https://swapi.info/api/planets', {
+              headers: {
+                // We can use an API token if needed since this is server-side code
+                Authorization: `Bearer ${process.env.SWAPI_TOKEN}`,
+              },
+            })
             if (!response.ok) {
               throw new Error(`Failed to fetch Star Wars planet items: ${response.status} ${response.statusText}`)
             }
