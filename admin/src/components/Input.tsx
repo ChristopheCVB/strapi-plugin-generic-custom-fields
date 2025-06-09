@@ -30,27 +30,31 @@ export const Input = (props: InputProps) => {
   }, [])
 
   const loadItems = useCallback(async () => {
+    if (!customFieldConfig) {
+      return
+    }
+
     setLoading(true)
 
-    if (!items || customFieldConfig!.searchable/* || customFieldConfig!.paginateItems && items.length < totalItems!*/) {
+    if (!items || customFieldConfig.searchable/* || customFieldConfig!.paginateItems && items.length < totalItems!*/) {
       if (!props.disabled) {
         const searchParams = new URLSearchParams()
-        if (customFieldConfig?.searchable && debouncedFilter) {
+        if (customFieldConfig.searchable && debouncedFilter) {
           searchParams.set('query', debouncedFilter)
           // searchParams.set('page', '1')
-        }/* else if (customFieldConfig?.paginateItems) {
+        }/* else if (customFieldConfig.paginateItems) {
             searchParams.set('page', page.toString())
           }*/
         const response = await get<ItemsResponse>(
           `/generic-custom-fields/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
         )
         setItems(response.data.items)
-        // if (customFieldConfig?.searchable && debouncedFilter) {
+        // if (customFieldConfig.searchable && debouncedFilter) {
         //   setTotalItems(response.data.items.length)
         //   setItems(response.data.items)
         // } else {
         //   setTotalItems(response.data.total)
-        //   if (customFieldConfig?.paginateItems && page > 1) {
+        //   if (customFieldConfig.paginateItems && page > 1) {
         //     setItems(prevItems => [...(prevItems ?? []), ...response.data.items])
         //   }
         //   else {
