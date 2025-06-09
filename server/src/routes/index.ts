@@ -1,7 +1,7 @@
 import adminRoutes from './admin'
 
 const routes = {
-  'admin': {
+  admin: {
     type: 'admin',
     routes: adminRoutes,
   },

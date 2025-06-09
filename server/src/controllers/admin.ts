@@ -2,14 +2,15 @@ import type { Context } from 'koa'
 import type { Core } from '@strapi/strapi'
 import { type Config, type ItemsResponse, type ItemResponse, itemsResponseSchema, itemResponseSchema } from '../config'
 import slugify from 'slugify'
+import { PLUGIN_ID } from '../pluginId'
 
 const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
   getConfigCustomFields() {
-    return strapi.plugin('generic-custom-fields').config('customFields') as Config['customFields']
+    return strapi.plugin(PLUGIN_ID).config('customFields') as Config['customFields']
   },
 
   getCustomFieldUID(name: string) {
-    return `plugin::generic-custom-fields.${slugify(name, { lower: true })}`
+    return `plugin::${PLUGIN_ID}.${slugify(name, { lower: true })}`
   },
 
   configCustomFields() {

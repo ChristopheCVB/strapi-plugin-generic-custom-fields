@@ -5,6 +5,8 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { Combobox, ComboboxOption, Field } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
 
+import { PLUGIN_ID } from '../pluginId'
+
 export const Input = (props: InputProps) => {
   const { get } = useFetchClient()
 
@@ -24,7 +26,7 @@ export const Input = (props: InputProps) => {
 
   const loadFieldConfig = useCallback(async (localCustomFieldUID: string) => {
     const response = await get<PickSerializable<Config['customFields'][number]>>(
-      `/generic-custom-fields/config/custom-fields/${localCustomFieldUID}`,
+      `/${PLUGIN_ID}/config/custom-fields/${localCustomFieldUID}`,
     )
     setCustomFieldConfig(response.data)
   }, [])
@@ -46,7 +48,7 @@ export const Input = (props: InputProps) => {
             searchParams.set('page', page.toString())
           }*/
         const response = await get<ItemsResponse>(
-          `/generic-custom-fields/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
+          `/${PLUGIN_ID}/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
         )
         setItems(response.data.items)
         // if (customFieldConfig.searchable && debouncedFilter) {
@@ -63,7 +65,7 @@ export const Input = (props: InputProps) => {
         // }
       } else if (field.value) {
         const response = await get<ItemResponse>(
-          `/generic-custom-fields/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
+          `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
         )
         setItems([response.data])
       }
