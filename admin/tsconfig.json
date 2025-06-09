@@ -3,6 +3,7 @@
   "include": ["./src", "./custom.d.ts"],
   "compilerOptions": {
     "rootDir": "../",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "strict": true
   }
 }

@@ -65,8 +65,8 @@
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",
-    "test:ts:front": "tsc --noEmit -p admin/tsconfig.json",
-    "test:ts:back": "tsc --noEmit -p server/tsconfig.json",
+    "typecheck:front": "tsc --noEmit -p admin/tsconfig.json",
+    "typecheck:back": "tsc --noEmit -p server/tsconfig.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
