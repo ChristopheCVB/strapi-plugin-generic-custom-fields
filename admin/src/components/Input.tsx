@@ -71,9 +71,9 @@ export const Input = (props: InputProps) => {
 
     setLoading(false)
   }, [
+    props.disabled,
     customFieldConfig,
     debouncedFilter,
-    props.disabled,
   ])
 
   useEffect(() => {
