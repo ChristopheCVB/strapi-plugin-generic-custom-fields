@@ -1,7 +1,7 @@
 import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/config'
 import { type InputProps, useField, useFetchClient } from '@strapi/strapi/admin'
 
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { Combobox, ComboboxOption, Field } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
 
@@ -22,64 +22,77 @@ export const Input = (props: InputProps) => {
 
   const [customFieldConfig, setCustomFieldConfig] = useState<PickSerializable<Config['customFields'][number]> | undefined>(undefined)
 
-  useEffect(() => {
-    const fetchFromAdmin = async () => {
-      setLoading(true)
+  const loadFieldConfig = useCallback(async (localCustomFieldUID: string) => {
+    const response = await get<PickSerializable<Config['customFields'][number]>>(
+      `/generic-custom-fields/config/custom-fields/${localCustomFieldUID}`,
+    )
+    setCustomFieldConfig(response.data)
+  }, [])
 
-      let localCustomFieldConfig = customFieldConfig
-      if (!customFieldConfig) {
-        const response = await get<PickSerializable<Config['customFields'][number]>>(
-          `/generic-custom-fields/config/custom-fields/${customFieldUID}`,
-        )
-        setCustomFieldConfig(response.data)
-        localCustomFieldConfig = response.data
-      }
+  const loadItems = useCallback(async () => {
+    setLoading(true)
 
-      if (!items || localCustomFieldConfig!.searchable/* || localCustomFieldConfig!.paginateItems && items.length < totalItems!*/) {
-        if (!props.disabled) {
-          const searchParams = new URLSearchParams()
-          if (localCustomFieldConfig?.searchable && debouncedFilter) {
-            searchParams.set('query', debouncedFilter)
-            // searchParams.set('page', '1')
-          }/* else if (localCustomFieldConfig?.paginateItems) {
+    if (!items || customFieldConfig!.searchable/* || customFieldConfig!.paginateItems && items.length < totalItems!*/) {
+      if (!props.disabled) {
+        const searchParams = new URLSearchParams()
+        if (customFieldConfig?.searchable && debouncedFilter) {
+          searchParams.set('query', debouncedFilter)
+          // searchParams.set('page', '1')
+        }/* else if (customFieldConfig?.paginateItems) {
             searchParams.set('page', page.toString())
           }*/
-          const response = await get<ItemsResponse>(
-            `/generic-custom-fields/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
-          )
-          setItems(response.data.items)
-          // if (localCustomFieldConfig?.searchable && debouncedFilter) {
-          //   setTotalItems(response.data.items.length)
-          //   setItems(response.data.items)
-          // } else {
-          //   setTotalItems(response.data.total)
-          //   if (localCustomFieldConfig?.paginateItems && page > 1) {
-          //     setItems(prevItems => [...(prevItems ?? []), ...response.data.items])
-          //   }
-          //   else {
-          //     setItems(response.data.items)
-          //   }
-          // }
-        } else if (field.value) {
-          const response = await get<ItemResponse>(
-            `/generic-custom-fields/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
-          )
-          setItems([response.data])
-        }
+        const response = await get<ItemsResponse>(
+          `/generic-custom-fields/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
+        )
+        setItems(response.data.items)
+        // if (customFieldConfig?.searchable && debouncedFilter) {
+        //   setTotalItems(response.data.items.length)
+        //   setItems(response.data.items)
+        // } else {
+        //   setTotalItems(response.data.total)
+        //   if (customFieldConfig?.paginateItems && page > 1) {
+        //     setItems(prevItems => [...(prevItems ?? []), ...response.data.items])
+        //   }
+        //   else {
+        //     setItems(response.data.items)
+        //   }
+        // }
+      } else if (field.value) {
+        const response = await get<ItemResponse>(
+          `/generic-custom-fields/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
+        )
+        setItems([response.data])
       }
-
-      setLoading(false)
     }
 
-    fetchFromAdmin().catch((error) => {
+    setLoading(false)
+  }, [
+    customFieldConfig,
+    debouncedFilter,
+    props.disabled,
+  ])
+
+  useEffect(() => {
+    loadFieldConfig(customFieldUID).catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error(`Error fetching custom field config for CustomField[${customFieldUID}]:`, error)
+    })
+  }, [
+    loadFieldConfig,
+    customFieldUID,
+  ])
+
+  useEffect(() => {
+    if (!customFieldConfig) {
+      return
+    }
+    loadItems().catch((error) => {
       // eslint-disable-next-line no-console
       console.error(`Error fetching items for CustomField[${customFieldUID}]:`, error)
     })
   }, [
-    props.disabled,
-    customFieldUID,
-    debouncedFilter,
-    // page,
+    loadItems,
+    customFieldConfig,
   ])
 
   return (
