@@ -50,11 +50,11 @@ export default {
                   name: 'required',
                   type: 'checkbox',
                   intlLabel: {
-                    id: getTranslation(`${PLUGIN_ID}.options.advanced.requiredField`),
+                    id: getTranslation('options.advanced.requiredField'),
                     defaultMessage: 'Required field',
                   },
                   description: {
-                    id: getTranslation(`${PLUGIN_ID}.options.advanced.requiredField.description`),
+                    id: getTranslation('options.advanced.requiredField.description'),
                     defaultMessage: 'You won\'t be able to create an entry if this field is empty',
                   },
                 },
@@ -62,11 +62,11 @@ export default {
                   name: 'unique',
                   type: 'checkbox',
                   intlLabel: {
-                    id: getTranslation(`${PLUGIN_ID}.options.advanced.uniqueField`),
+                    id: getTranslation('options.advanced.uniqueField'),
                     defaultMessage: 'Unique field',
                   },
                   description: {
-                    id: getTranslation(`${PLUGIN_ID}.options.advanced.uniqueField.description`),
+                    id: getTranslation('options.advanced.uniqueField.description'),
                     defaultMessage: 'You won\'t be able to create an entry if there is an existing entry with identical content',
                   },
                 },
@@ -74,11 +74,11 @@ export default {
                   name: 'private',
                   type: 'checkbox',
                   intlLabel: {
-                    id: getTranslation(`${PLUGIN_ID}.options.advanced.privateField`),
+                    id: getTranslation('options.advanced.privateField'),
                     defaultMessage: 'Private field',
                   },
                   description: {
-                    id: getTranslation(`${PLUGIN_ID}.options.advanced.privateField.description`),
+                    id: getTranslation('options.advanced.privateField.description'),
                     defaultMessage: 'This field will not show up in the API response',
                   },
                 },
