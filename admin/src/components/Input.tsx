@@ -4,8 +4,27 @@ import { type InputProps, useField, useFetchClient } from '@strapi/strapi/admin'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { Combobox, ComboboxOption, Field } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
+import { styled } from 'styled-components'
 
 import { PLUGIN_ID } from '../pluginId'
+
+const IconStyled = styled.div<{ src: string }>`
+  width: 2em;
+  height: 2em;
+  display: inline-block;
+  margin-right: 0.5em;
+  vertical-align: middle;
+  background-color: currentColor;
+  mask-image: url(${({ src }: { src: string }) => src});
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  -webkit-mask-image: url(${({ src }: { src: string }) => src});
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+`
+const Icon = ({ src, alt }: { src: string, alt: string }) => {
+  return <IconStyled src={src} aria-label={alt} />
+}
 
 export const Input = (props: InputProps) => {
   const { get } = useFetchClient()
@@ -23,6 +42,7 @@ export const Input = (props: InputProps) => {
   const debouncedFilter = useDebounce(filter, 600)
 
   const [customFieldConfig, setCustomFieldConfig] = useState<PickSerializable<Config['customFields'][number]> | undefined>(undefined)
+  const [selectedItem, setSelectedItem] = useState<ItemResponse | undefined>(undefined)
 
   const loadFieldConfig = useCallback(async (localCustomFieldUID: string) => {
     const response = await get<PickSerializable<Config['customFields'][number]>>(
@@ -50,6 +70,12 @@ export const Input = (props: InputProps) => {
         const response = await get<ItemsResponse>(
           `/${PLUGIN_ID}/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
         )
+        if (field.value && !response.data.items.find(item => item.value === field.value)) {
+          const responseItem = await get<ItemResponse>(
+            `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
+          )
+          response.data.items.push(responseItem.data)
+        }
         setItems(response.data.items)
         // if (customFieldConfig.searchable && debouncedFilter) {
         //   setTotalItems(response.data.items.length)
@@ -101,6 +127,14 @@ export const Input = (props: InputProps) => {
     customFieldConfig,
   ])
 
+  useEffect(() => {
+    if (field.value) {
+      setSelectedItem(items?.find(item => item.value === field.value))
+    } else {
+      setSelectedItem(undefined)
+    }
+  }, [field.value, items])
+
   return (
     <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={field.error} >
       <Field.Label>{props.label}</Field.Label>
@@ -115,6 +149,9 @@ export const Input = (props: InputProps) => {
         filterValue={customFieldConfig?.searchable ? '' : undefined}
         // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
         // onLoadMore={() => setPage(prevPage => prevPage + 1)}
+        startIcon={
+          selectedItem?.iconSrc ? <Icon src={selectedItem.iconSrc} alt={selectedItem.label} /> : null
+        }
       >
         {
           items?.map(item => {
@@ -123,6 +160,9 @@ export const Input = (props: InputProps) => {
                 key={item.value}
                 value={item.value}
               >
+                {
+                  item.iconSrc ? <Icon src={item.iconSrc} alt={item.label} /> : null
+                }
                 {item.label}
               </ComboboxOption>
             )

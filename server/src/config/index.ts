@@ -3,6 +3,7 @@ import { z } from 'zod'
 export const itemResponseSchema = z.object({
   value: z.string().min(1),
   label: z.string().min(1),
+  iconSrc: z.string().optional(),
 })
 export const itemsResponseSchema = z.object({
   items: z.array(itemResponseSchema),
