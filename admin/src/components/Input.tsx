@@ -8,22 +8,28 @@ import { styled } from 'styled-components'
 
 import { PLUGIN_ID } from '../pluginId'
 
-const IconStyled = styled.div<{ src: string }>`
+const IconStyled = styled.div<{ src: string, colorMask?: boolean }>`
   width: 2em;
   height: 2em;
   display: inline-block;
   margin-right: 0.5em;
   vertical-align: middle;
-  background-color: currentColor;
-  mask-image: url(${({ src }: { src: string }) => src});
-  mask-repeat: no-repeat;
-  mask-size: 100% 100%;
-  -webkit-mask-image: url(${({ src }: { src: string }) => src});
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
+  ${({src, colorMask}) => colorMask ? `
+    background-color: currentColor;
+    mask-image: url(${src});
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    -webkit-mask-image: url(${src});
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+  ` : `
+    background-image: url(${src});
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  `}
 `
-const Icon = ({ src, alt }: { src: string, alt: string }) => {
-  return <IconStyled src={src} aria-label={alt} />
+const Icon = ({ src, alt, colorMask }: { src: string, alt: string, colorMask?: boolean }) => {
+  return <IconStyled src={src} aria-label={alt} colorMask={colorMask} />
 }
 
 export const Input = (props: InputProps) => {
@@ -150,7 +156,7 @@ export const Input = (props: InputProps) => {
         // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
         // onLoadMore={() => setPage(prevPage => prevPage + 1)}
         startIcon={
-          selectedItem?.iconSrc ? <Icon src={selectedItem.iconSrc} alt={selectedItem.label} /> : null
+          selectedItem?.icon ? <Icon src={selectedItem.icon.src} alt={selectedItem.label} colorMask={selectedItem.icon.colorMask} /> : null
         }
       >
         {
@@ -161,7 +167,7 @@ export const Input = (props: InputProps) => {
                 value={item.value}
               >
                 {
-                  item.iconSrc ? <Icon src={item.iconSrc} alt={item.label} /> : null
+                  item.icon ? <Icon src={item.icon.src} alt={item.label} colorMask={item.icon.colorMask} /> : null
                 }
                 {item.label}
               </ComboboxOption>
