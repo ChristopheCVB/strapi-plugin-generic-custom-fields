@@ -25,7 +25,7 @@ const IconStyled = styled.div<{ src: string, colorMask?: boolean }>`
   ` : `
     background-image: url(${src});
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: contain;
   `}
 `
 const Icon = ({ src, alt, colorMask }: { src: string, alt: string, colorMask?: boolean }) => {
