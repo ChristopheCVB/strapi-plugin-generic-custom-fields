@@ -79,7 +79,7 @@
     "zod": "^3.25.64"
   },
   "devDependencies": {
-    "@eslint/js": "^9.28.0",
+    "@eslint/js": "^9.29.0",
     "@strapi/sdk-plugin": "^5.3.2",
     "@strapi/strapi": "^5.15.1",
     "@strapi/typescript-utils": "^5.15.1",
@@ -87,7 +87,7 @@
     "@types/koa": "^2.15.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^9.28.0",
+    "eslint": "^9.29.0",
     "globals": "^16.2.0",
     "react": "^18",
     "react-dom": "^18",
