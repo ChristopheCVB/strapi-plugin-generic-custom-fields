@@ -12,10 +12,10 @@ const IconStyled = styled.div<{ src: string, colorMask?: boolean }>`
   width: 2em;
   height: 2em;
   display: inline-block;
-  margin-right: 0.5em;
+  margin-right: 0.75em;
   vertical-align: middle;
+  background-color: currentColor;
   ${({src, colorMask}) => colorMask ? `
-    background-color: currentColor;
     mask-image: url(${src});
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
@@ -26,6 +26,7 @@ const IconStyled = styled.div<{ src: string, colorMask?: boolean }>`
     background-image: url(${src});
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center;
   `}
 `
 const Icon = ({ src, alt, colorMask }: { src: string, alt: string, colorMask?: boolean }) => {
