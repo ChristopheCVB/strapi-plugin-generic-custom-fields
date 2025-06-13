@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.0.1...v1.0.2) (2025-06-13)
+
+
+### Bug Fixes
+
+* Item icon position and color ([ba2c5de](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/ba2c5de0fc52a2873b5812f7e1d93ee9058cc5e6))
+
 ## [1.0.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.0.0...v1.0.1) (2025-06-13)
 
 
