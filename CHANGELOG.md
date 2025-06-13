@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.0.0...v1.0.1) (2025-06-13)
+
+
+### Bug Fixes
+
+* Item icon size when no colorMask ([b900f0d](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/b900f0d44e349a6cc60dd0c0e78c76ff023ae050))
+
 ## [1.0.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v0.2.0...v1.0.0) (2025-06-13)
 
 
