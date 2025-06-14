@@ -10,7 +10,11 @@ permissions:
 name: release-please
 
 jobs:
+  test:
+    uses: ./.github/actions/test.yml
+
   release-please:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4

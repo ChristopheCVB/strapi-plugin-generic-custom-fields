@@ -36,7 +36,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       if (!customField) {
         ctx.throw(404, `Custom field ${ctx.params.uid} not found`)
       }
-    
+
       const query = (ctx.request.query.query as string | undefined)
       // const page = (ctx.request.query.page as string | undefined)
       return itemsResponseSchema.parse(await customField.fetchItems({
