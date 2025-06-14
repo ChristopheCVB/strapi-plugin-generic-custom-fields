@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.0.2...v1.1.0) (2025-06-14)
+
+
+### Features
+
+* Add Vitest configuration and testing setup ([e83d569](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/e83d569572ddface1974f0f6cc6cf64bb6a4531e))
+* Implement reusable test action for GitHub workflows ([20fd273](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/20fd273d560984dddc65ded6071ead87431c4c59))
+
 ## [1.0.2](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.0.1...v1.0.2) (2025-06-13)
 
 
