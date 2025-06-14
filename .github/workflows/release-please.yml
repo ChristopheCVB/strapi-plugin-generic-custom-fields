@@ -11,7 +11,9 @@ name: release-please
 
 jobs:
   test:
-    uses: ./.github/actions/test.yml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/test
 
   release-please:
     needs: test
