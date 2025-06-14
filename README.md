@@ -56,6 +56,10 @@ type Config = {
 type Item = {
     value: string; // Unique identifier for the item. This is used to store the value of the custom field.
     label: string; // Label of the item.
+    icon?: {
+      src: string; // URL of the icon.
+      colorMask?: boolean; // Whether the icon should be masked with the color of the field.
+    }
 };
 ```
 This configuration allows you to define custom fields that can fetch items either synchronously or asynchronously. The `fetchItems` function is used to retrieve a list of items based on a query string that can be empty, while the `fetchItem` function retrieves a single item based on its value.
