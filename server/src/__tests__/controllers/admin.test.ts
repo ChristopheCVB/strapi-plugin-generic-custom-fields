@@ -126,7 +126,7 @@ describe('admin controller', () => {
         request: { query: { query: 'test' } },
       } as unknown as Context
       const error = new Error('fetchItems error')
-      mockCustomFields[0].fetchItems.mockRejectedValue(error)
+      vi.mocked(mockCustomFields[0].fetchItems).mockRejectedValue(error)
       await expect(adminController.customFieldItems(context)).rejects.toThrow('fetchItems error')
     })
   })
