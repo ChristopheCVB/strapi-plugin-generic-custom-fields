@@ -11,6 +11,7 @@ name: release-please
 
 jobs:
   test:
+    if: "${{ !contains(github.event.head_commit.message, 'chore(main): release') }}"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -28,8 +29,18 @@ jobs:
 
       - uses: ./.github/actions/test
 
-  release-please:
+  release-please-regular:
     needs: test
+    if: "${{ !contains(github.event.head_commit.message, 'chore(main): release') }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          release-type: node
+
+  release-please-release:
+    if: "${{ contains(github.event.head_commit.message, 'chore(main): release') }}"
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
