@@ -108,4 +108,23 @@ describe('config validation', () => {
 
     expect(() => config.validator(invalidConfig)).toThrow()
   })
+
+  it('should reject field names that would result in duplicate slugified names', () => {
+    const invalidConfig = {
+      customFields: [
+        {
+          name: 'Test Field',
+          fetchItems: () => ({ items: [] }),
+          fetchItem: () => ({ value: 'test', label: 'Test' }),
+        },
+        {
+          name: 'test-field', // Will be slugified to the same as above
+          fetchItems: () => ({ items: [] }),
+          fetchItem: () => ({ value: 'test', label: 'Test' }),
+        },
+      ],
+    }
+
+    expect(() => config.validator(invalidConfig)).toThrow('Each custom field name must be unique after slugification')
+  })
 }) 
