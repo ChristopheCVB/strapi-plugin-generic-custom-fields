@@ -96,7 +96,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6",
-    "styled-components": "^6",
+    "styled-components": "^6.1.19",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.0",
     "vitest": "^3.2.3"
@@ -107,7 +107,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6",
-    "styled-components": "^6"
+    "styled-components": "^6.1.19"
   },
   "engines": {
     "node": ">=22.16.0"
