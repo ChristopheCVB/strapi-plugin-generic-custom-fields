@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.1.0...v1.2.0) (2025-06-15)
+
+
+### Features
+
+* Enhance custom field validation to ensure unique slugified names ([82de557](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/82de5575f3716824177722441667700043b53c14))
+
 ## [1.1.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.0.2...v1.1.0) (2025-06-14)
 
 
