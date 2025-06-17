@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.2.1...v1.2.2) (2025-06-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency zod to ^3.25.67 ([#35](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/35)) ([fc08e85](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/fc08e85251d85163a33202dd82c72f6a23d66318))
+
 ## [1.2.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.2.0...v1.2.1) (2025-06-16)
 
 
