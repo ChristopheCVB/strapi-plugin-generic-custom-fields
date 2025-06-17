@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.2.2...v1.2.3) (2025-06-17)
+
+
+### Bug Fixes
+
+* Use generics where available ([3112703](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/31127036523b55cf404f0c89b914b494a386e2e2))
+
 ## [1.2.2](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.2.1...v1.2.2) (2025-06-17)
 
 
