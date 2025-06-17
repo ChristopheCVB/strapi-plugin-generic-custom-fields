@@ -90,7 +90,7 @@
     "@types/koa": "^2.15.0",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
-    "@vitest/coverage-v8": "^3.2.3",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.29.0",
     "globals": "^16.2.0",
     "react": "^18.3.1",
@@ -99,7 +99,7 @@
     "styled-components": "^6.1.19",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1",
-    "vitest": "^3.2.3"
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "@strapi/sdk-plugin": "^5.3.2",
