@@ -6,7 +6,7 @@ import { PLUGIN_ID } from '../pluginId'
 
 const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
   getConfigCustomFields() {
-    return strapi.plugin(PLUGIN_ID).config('customFields') as Config['customFields']
+    return strapi.plugin(PLUGIN_ID).config<Config['customFields']>('customFields')
   },
 
   getCustomFieldUID(name: string) {

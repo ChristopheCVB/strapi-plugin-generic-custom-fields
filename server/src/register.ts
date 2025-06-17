@@ -4,7 +4,7 @@ import slugify from 'slugify'
 import { PLUGIN_ID } from './pluginId'
 
 const register = ({ strapi }: { strapi: Core.Strapi }) => {
-  const configCustomFields = strapi.plugin(PLUGIN_ID).config('customFields') as Config['customFields']
+  const configCustomFields = strapi.plugin(PLUGIN_ID).config<Config['customFields']>('customFields')
 
   for (const customField of configCustomFields) {
     strapi.customFields.register({
