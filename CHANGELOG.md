@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.2.3...v1.3.0) (2025-06-18)
+
+
+### Features
+
+* Minimum node version ([839d730](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/839d730b4e7cdeea187a883f5f409724ce2449d8))
+
 ## [1.2.3](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.2.2...v1.2.3) (2025-06-17)
 
 
