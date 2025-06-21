@@ -46,6 +46,9 @@ jobs:
       - name: Build 🔨
         run: pnpm build
 
+      - name: Verify 🔍
+        run: pnpm verify
+
       - name: Publish to NPM 📦️
         uses: simenandre/publish-with-pnpm@v2
         with:
