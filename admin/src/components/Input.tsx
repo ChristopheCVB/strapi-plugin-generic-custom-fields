@@ -2,9 +2,9 @@ import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/co
 import { type InputProps, useField, useFetchClient } from '@strapi/strapi/admin'
 
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { Combobox, ComboboxOption, Field } from '@strapi/design-system'
+import { DesignSystemProvider, Combobox, ComboboxOption, Field } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 
 import { PLUGIN_ID } from '../pluginId'
 
@@ -34,6 +34,8 @@ const Icon = ({ src, alt, colorMask }: { src: string, alt: string, colorMask?: b
 }
 
 export const Input = (props: InputProps) => {
+  const theme = useTheme()
+
   const { get } = useFetchClient()
 
   // @ts-expect-error props.attribute.customField is a string
@@ -143,41 +145,44 @@ export const Input = (props: InputProps) => {
   }, [field.value, items])
 
   return (
-    <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={field.error} >
-      <Field.Label>{props.label}</Field.Label>
-      <Combobox
-        onChange={(value: string) => field.onChange(props.name, value ?? '')}
-        value={field.value}
-        placeholder={props.placeholder}
-        disabled={props.disabled}
-        loading={loading}
-        autocomplete={{ type: 'list', filter: 'contains' }}
-        onInputChange={(ev: ChangeEvent<HTMLInputElement>) => setFilter(ev.target.value)}
-        filterValue={customFieldConfig?.searchable ? '' : undefined}
-        // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
-        // onLoadMore={() => setPage(prevPage => prevPage + 1)}
-        startIcon={
-          selectedItem?.icon ? <Icon src={selectedItem.icon.src} alt={selectedItem.label} colorMask={selectedItem.icon.colorMask} /> : null
-        }
-      >
-        {
-          items?.map(item => {
-            return (
-              <ComboboxOption
-                key={item.value}
-                value={item.value}
-              >
-                {
-                  item.icon ? <Icon src={item.icon.src} alt={item.label} colorMask={item.icon.colorMask} /> : null
-                }
-                {item.label}
-              </ComboboxOption>
-            )
-          })
-        }
-      </Combobox>
-      <Field.Hint />
-      <Field.Error />
-    </Field.Root>
+    <DesignSystemProvider theme={theme}>
+      <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={field.error} >
+        <Field.Label>{props.label}</Field.Label>
+        <Combobox
+          onChange={(value: string) => field.onChange(props.name, value ?? '')}
+          value={field.value}
+          placeholder={props.placeholder}
+          disabled={props.disabled}
+          loading={loading}
+          autocomplete={{ type: 'list', filter: 'contains' }}
+          onInputChange={(ev: ChangeEvent<HTMLInputElement>) => setFilter(ev.target.value)}
+          filterValue={customFieldConfig?.searchable ? '' : undefined}
+          // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
+          // onLoadMore={() => setPage(prevPage => prevPage + 1)}
+          startIcon={
+            selectedItem?.icon ? <Icon src={selectedItem.icon.src} alt={selectedItem.label} colorMask={selectedItem.icon.colorMask} /> : null
+          }
+          onClear={() => field.onChange(props.name, '')}
+        >
+          {
+            items?.map(item => {
+              return (
+                <ComboboxOption
+                  key={item.value}
+                  value={item.value}
+                >
+                  {
+                    item.icon ? <Icon src={item.icon.src} alt={item.label} colorMask={item.icon.colorMask} /> : null
+                  }
+                  {item.label}
+                </ComboboxOption>
+              )
+            })
+          }
+        </Combobox>
+        <Field.Hint />
+        <Field.Error />
+      </Field.Root>
+    </DesignSystemProvider>
   )
 }
