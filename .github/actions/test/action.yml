@@ -20,4 +20,12 @@ runs:
 
     - name: Run tests 🧪
       shell: bash
-      run: pnpm test 
+      run: pnpm test
+
+    - name: Build 🔨
+      shell: bash
+      run: pnpm build
+
+    - name: Verify 🔍
+      shell: bash
+      run: pnpm verify
