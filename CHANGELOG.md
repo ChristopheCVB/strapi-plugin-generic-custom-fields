@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.4.0...v1.4.1) (2025-07-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @strapi/design-system to ^2.0.0-rc.28 ([#58](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/58)) ([c1015a2](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/c1015a2684ed220c22d7644339df6f5eb27e8b54))
+* **deps:** update dependency @strapi/icons to ^2.0.0-rc.28 ([#59](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/59)) ([3e35528](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/3e35528c2edf5095e7358ecee11b6e31bdbb1b80))
+* **deps:** update dependency zod to ^3.25.74 ([#57](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/57)) ([a3ee945](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/a3ee945c4dc81f053a8f9a0c9db687e17d1119a3))
+* **deps:** update dependency zod to ^3.25.75 ([#61](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/61)) ([b2556cf](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/b2556cf00a8496716e9d7c12789c143e00957a5d))
+* **deps:** update dependency zod to ^3.25.76 ([#62](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/62)) ([94b79b1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/94b79b1f289c473acabb6521e58407abfd124268))
+
 ## [1.4.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.3.0...v1.4.0) (2025-06-23)
 
 
