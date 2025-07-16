@@ -10,7 +10,7 @@ const register = ({ strapi }: { strapi: Core.Strapi }) => {
     strapi.customFields.register({
       name: slugify(customField.name, { lower: true }),
       plugin: PLUGIN_ID,
-      type: 'string',
+      type: customField.type || 'string',
       inputSize: customField.inputSize,
     })
   }

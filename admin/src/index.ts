@@ -19,7 +19,7 @@ export default {
       app.customFields.register({
         name: customFieldName,
         pluginId: PLUGIN_ID,
-        type: 'string',
+        type: customField.type || 'string',
         intlLabel: {
           id: `${PLUGIN_ID}.${customFieldName}.label`,
           defaultMessage: customField.name,
