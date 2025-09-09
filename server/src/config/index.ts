@@ -2,7 +2,7 @@ import { z } from 'zod'
 import slugify from 'slugify'
 
 export const itemResponseSchema = z.object({
-  value: z.string().min(1),
+  value: z.union([z.string().min(1), z.number()]),
   label: z.string().min(1),
   icon: z.object({
     src: z.string(),
@@ -16,6 +16,7 @@ export const itemsResponseSchema = z.object({
 
 const customFieldSchema = z.object({
   name: z.string().min(1),
+  type: z.enum(['string', 'biginteger', 'decimal', 'integer']).optional(),
   description: z.string().min(1).optional(),
   icon: z.union([
     z.literal('Alien'),
@@ -202,7 +203,7 @@ const customFieldSchema = z.object({
     query: z.string().optional(),
   })).returns(z.union([itemsResponseSchema, z.promise(itemsResponseSchema)])),
   fetchItem: z.function().args(z.object({
-    value: z.string(),
+    value: z.union([z.string(), z.number()]),
   })).returns(z.union([itemResponseSchema, z.promise(itemResponseSchema)])),
 })
 
