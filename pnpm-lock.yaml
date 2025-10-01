@@ -40,8 +40,8 @@ importers:
         specifier: ^5.25.0
         version: 5.25.0
       '@stylistic/eslint-plugin':
-        specifier: ^5.2.3
-        version: 5.2.3(eslint@9.36.0)
+        specifier: ^5.4.0
+        version: 5.4.0(eslint@9.36.0)
       '@types/koa':
         specifier: ^2.15.0
         version: 2.15.0
@@ -684,12 +684,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@eslint-community/eslint-utils@4.7.0':
-    resolution: {integrity: sha512-dyybb3AcajC7uha6CvhdVRJqaKyn7w2YKqKyAN37NKYgZT36w+iRb0Dymmc5qEJ549c/S31cMMSFd75bteCpCw==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
 
   '@eslint-community/eslint-utils@4.9.0':
     resolution: {integrity: sha512-ayVFHdtZ+hsq1t2Dy24wCmGXGe4q9Gu3smhLYALJrr473ZH27MsnSL+LKUlimp4BWJqMDMLmPpx/Q9R3OAlL4g==}
@@ -1928,8 +1922,8 @@ packages:
     resolution: {integrity: sha512-y55ptEvswfFByj3FNfkDvp+aUEVXbYeWMsHMqnI9+JQnlzKi8KISg8mEiGjkUF/Od5vQX0NwR+cAFxXU98hVZw==}
     engines: {node: '>=18.0.0 <=22.x.x', npm: '>=6.0.0'}
 
-  '@stylistic/eslint-plugin@5.2.3':
-    resolution: {integrity: sha512-oY7GVkJGVMI5benlBDCaRrSC1qPasafyv5dOBLLv5MTilMGnErKhO6ziEfodDDIZbo5QxPUNW360VudJOFODMw==}
+  '@stylistic/eslint-plugin@5.4.0':
+    resolution: {integrity: sha512-UG8hdElzuBDzIbjG1QDwnYH0MQ73YLXDFHgZzB4Zh/YJfnw8XNsloVtytqzx0I2Qky9THSdpTmi8Vjn/pf/Lew==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: '>=9.0.0'
@@ -2249,10 +2243,6 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
-
-  '@typescript-eslint/types@8.38.0':
-    resolution: {integrity: sha512-wzkUfX3plUqij4YwWaJyqhiPE5UCRVlFpKn1oCRn2O1bJ592XxWJj8ROQ3JD5MYXLORW84063z3tZTb/cs4Tyw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@typescript-eslint/types@8.45.0':
     resolution: {integrity: sha512-WugXLuOIq67BMgQInIxxnsSyRLFxdkJEJu8r4ngLR56q/4Q5LrbfkFRH27vMTjxEK8Pyz7QfzuZe/G15qQnVRA==}
@@ -7004,11 +6994,6 @@ snapshots:
   '@esbuild/win32-x64@0.25.5':
     optional: true
 
-  '@eslint-community/eslint-utils@4.7.0(eslint@9.36.0)':
-    dependencies:
-      eslint: 9.36.0
-      eslint-visitor-keys: 3.4.3
-
   '@eslint-community/eslint-utils@4.9.0(eslint@9.36.0)':
     dependencies:
       eslint: 9.36.0
@@ -9092,10 +9077,10 @@ snapshots:
       yup: 0.32.9
       zod: 3.25.67
 
-  '@stylistic/eslint-plugin@5.2.3(eslint@9.36.0)':
+  '@stylistic/eslint-plugin@5.4.0(eslint@9.36.0)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.7.0(eslint@9.36.0)
-      '@typescript-eslint/types': 8.38.0
+      '@eslint-community/eslint-utils': 4.9.0(eslint@9.36.0)
+      '@typescript-eslint/types': 8.45.0
       eslint: 9.36.0
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
@@ -9461,8 +9446,6 @@ snapshots:
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
-
-  '@typescript-eslint/types@8.38.0': {}
 
   '@typescript-eslint/types@8.45.0': {}
 
