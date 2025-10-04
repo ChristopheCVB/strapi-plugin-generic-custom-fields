@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.2](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.4.1...v1.4.2) (2025-10-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @strapi/design-system to ^2.0.0-rc.30 ([#103](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/103)) ([8a40574](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/8a40574ab4fba525c11379b8625ba587cc981199))
+* **deps:** update dependency @strapi/icons to ^2.0.0-rc.30 ([#107](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/107)) ([000e453](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/000e453dc4e569dd8f4dea0ebb1ecfd3db892015))
+* **deps:** update dependency react-intl to ^7.1.12 ([#109](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/109)) ([3f5642c](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/3f5642c945a8c331cb384bb0d4850137eba1ff47))
+
 ## [1.4.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.4.0...v1.4.1) (2025-07-13)
 
 
