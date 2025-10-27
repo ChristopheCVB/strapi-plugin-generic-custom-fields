@@ -8,7 +8,9 @@ import { styled, useTheme } from 'styled-components'
 
 import { PLUGIN_ID } from '../pluginId'
 
-const IconStyled = styled.div<{ src: string, colorMask?: boolean }>`
+const IconStyled = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'src' && prop !== 'colorMask',
+})<{ src: string, colorMask?: boolean }>`
   width: 2em;
   height: 2em;
   display: inline-block;
@@ -30,16 +32,16 @@ const IconStyled = styled.div<{ src: string, colorMask?: boolean }>`
   `}
 `
 const Icon = ({ src, alt, colorMask }: { src: string, alt: string, colorMask?: boolean }) => {
-  return <IconStyled src={src} aria-label={alt} colorMask={colorMask} />
+  return <IconStyled src={src} aria-label={alt} colorMask={colorMask} key={src} />
 }
 
-export const Input = (props: InputProps) => {
+const Input = (props: InputProps) => {
   const theme = useTheme()
 
   const { get } = useFetchClient()
 
   // @ts-expect-error props.attribute.customField is a string
-  const customFieldUID = props.attribute.customField
+  const customFieldUID = props.attribute.customField as string
 
   const field = useField<string>(props.name)
 
@@ -186,3 +188,5 @@ export const Input = (props: InputProps) => {
     </DesignSystemProvider>
   )
 }
+
+export default Input

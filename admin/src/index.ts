@@ -1,12 +1,14 @@
 import type { Config } from '../../server/src/config'
 import type { StrapiApp } from '@strapi/strapi/admin'
 
+import { ComponentType } from 'react'
+import { getFetchClient } from '@strapi/strapi/admin'
+import slugify from 'slugify'
+
 import { PLUGIN_ID } from './pluginId'
 import { Initializer } from './components/Initializer'
 import { PluginIcon } from './components/PluginIcon'
-import { getFetchClient } from '@strapi/strapi/admin'
 import { getTranslation } from './utils/getTranslation'
-import slugify from 'slugify'
 
 export default {
   async register(app: StrapiApp) {
@@ -32,11 +34,7 @@ export default {
           icon: customField.icon || 'PuzzlePiece',
         }),
         components: {
-          Input: () =>
-            // @ts-expect-error module is a React component
-            import('./components/Input').then((module) => ({
-              default: module.Input,
-            })),
+          Input: () => import('./components/Input') as Promise<{ default: ComponentType }>,
         },
         options: {
           advanced: [
