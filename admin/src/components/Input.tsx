@@ -1,14 +1,38 @@
 import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/config'
 import { type InputProps, useField, useFetchClient } from '@strapi/strapi/admin'
 
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { DesignSystemProvider, Combobox, ComboboxOption, Field } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
 import { styled, useTheme } from 'styled-components'
 
 import { PLUGIN_ID } from '../pluginId'
 
-const IconStyled = styled.div`
+const Icon = styled.span.withConfig({
+  shouldForwardProp: (prop) => prop !== 'src' && prop !== 'colorMask',
+}).attrs<{ src: string, colorMask?: boolean }>(props => {
+  if (props.colorMask) {
+    return {
+      style: {
+        maskImage: `url(${props.src})`,
+        maskRepeat: 'no-repeat',
+        maskSize: '100% 100%',
+        WebkitMaskImage: `url(${props.src})`,
+        WebkitMaskRepeat: 'no-repeat',
+        WebkitMaskSize: '100% 100%',
+      },
+    }
+  } else {
+    return {
+      style: {
+        backgroundImage: `url(${props.src})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+      },
+    }
+  }
+})<{ src: string, colorMask?: boolean }>`
   width: 2em;
   height: 2em;
   display: inline-block;
@@ -16,29 +40,6 @@ const IconStyled = styled.div`
   vertical-align: middle;
   background-color: currentColor;
 `
-const Icon = ({ src, alt, colorMask }: { src: string, alt: string, colorMask?: boolean }) => {
-  const style = useMemo(() => {
-    if (colorMask) {
-      return {
-        maskImage: `url(${src})`,
-        maskRepeat: 'no-repeat',
-        maskSize: '100% 100%',
-        WebkitMaskImage: `url(${src})`,
-        WebkitMaskRepeat: 'no-repeat',
-        WebkitMaskSize: '100% 100%',
-      }
-    } else {
-      return {
-        backgroundImage: `url(${src})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'contain',
-        backgroundPosition: 'center',
-      }
-    }
-  }, [src, colorMask])
-      
-  return <IconStyled aria-label={alt} style={style} />
-}
 
 const Input = (props: InputProps) => {
   const theme = useTheme()
@@ -167,7 +168,7 @@ const Input = (props: InputProps) => {
           // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
           // onLoadMore={() => setPage(prevPage => prevPage + 1)}
           startIcon={
-            selectedItem?.icon ? <Icon src={selectedItem.icon.src} alt={selectedItem.label} colorMask={selectedItem.icon.colorMask} /> : null
+            selectedItem?.icon ? <Icon src={selectedItem.icon.src} colorMask={selectedItem.icon.colorMask} /> : null
           }
           onClear={() => field.onChange(props.name, '')}
         >
@@ -179,7 +180,7 @@ const Input = (props: InputProps) => {
                   value={item.value}
                 >
                   {
-                    item.icon ? <Icon src={item.icon.src} alt={item.label} colorMask={item.icon.colorMask} /> : null
+                    item.icon ? <Icon src={item.icon.src} colorMask={item.icon.colorMask} /> : null
                   }
                   {item.label}
                 </ComboboxOption>
