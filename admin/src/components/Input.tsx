@@ -1,38 +1,43 @@
 import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/config'
 import { type InputProps, useField, useFetchClient } from '@strapi/strapi/admin'
 
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { DesignSystemProvider, Combobox, ComboboxOption, Field } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
 import { styled, useTheme } from 'styled-components'
 
 import { PLUGIN_ID } from '../pluginId'
 
-const IconStyled = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'src' && prop !== 'colorMask',
-})<{ src: string, colorMask?: boolean }>`
+const IconStyled = styled.div`
   width: 2em;
   height: 2em;
   display: inline-block;
   margin-right: 0.75em;
   vertical-align: middle;
   background-color: currentColor;
-  ${({src, colorMask}) => colorMask ? `
-    mask-image: url(${src});
-    mask-repeat: no-repeat;
-    mask-size: 100% 100%;
-    -webkit-mask-image: url(${src});
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: 100% 100%;
-  ` : `
-    background-image: url(${src});
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-  `}
 `
 const Icon = ({ src, alt, colorMask }: { src: string, alt: string, colorMask?: boolean }) => {
-  return <IconStyled src={src} aria-label={alt} colorMask={colorMask} key={src} />
+  const style = useMemo(() => {
+    if (colorMask) {
+      return {
+        maskImage: `url(${src})`,
+        maskRepeat: 'no-repeat',
+        maskSize: '100% 100%',
+        WebkitMaskImage: `url(${src})`,
+        WebkitMaskRepeat: 'no-repeat',
+        WebkitMaskSize: '100% 100%',
+      }
+    } else {
+      return {
+        backgroundImage: `url(${src})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+      }
+    }
+  }, [src, colorMask])
+      
+  return <IconStyled aria-label={alt} style={style} />
 }
 
 const Input = (props: InputProps) => {
