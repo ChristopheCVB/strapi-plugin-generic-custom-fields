@@ -8,9 +8,14 @@ import { styled, useTheme } from 'styled-components'
 
 import { PLUGIN_ID } from '../pluginId'
 
+interface IconProps {
+  src: string
+  colorMask?: boolean
+}
+
 const Icon = styled.span.withConfig({
   shouldForwardProp: (prop) => prop !== 'src' && prop !== 'colorMask',
-}).attrs<{ src: string, colorMask?: boolean }>(props => {
+}).attrs<IconProps>(props => {
   if (props.colorMask) {
     return {
       style: {
@@ -32,7 +37,7 @@ const Icon = styled.span.withConfig({
       },
     }
   }
-})<{ src: string, colorMask?: boolean }>`
+})<IconProps>`
   width: 2em;
   height: 2em;
   display: inline-block;
