@@ -88,7 +88,7 @@
     "@strapi/typescript-utils": "^5.31.0",
     "@stylistic/eslint-plugin": "^5.6.1",
     "@types/koa": "^2.15.0",
-    "@types/react": "^18.3.26",
+    "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
     "@vitest/coverage-v8": "^4.0.10",
     "eslint": "^9.39.1",
