@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.2](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.4.1...v1.4.2) (2025-11-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @strapi/design-system to ^2.0.0-rc.30 ([#103](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/103)) ([8a40574](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/8a40574ab4fba525c11379b8625ba587cc981199))
+* **deps:** update dependency @strapi/design-system to ^2.0.1 ([#127](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/127)) ([b528a13](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/b528a1392cf0ebbd2dd448ee3c042f21c9e21610))
+* **deps:** update dependency @strapi/icons to ^2.0.0-rc.30 ([#107](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/107)) ([000e453](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/000e453dc4e569dd8f4dea0ebb1ecfd3db892015))
+* **deps:** update dependency @strapi/icons to ^2.0.1 ([#128](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/128)) ([d0de32d](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/d0de32d00d881542a2c8aa2c1ac37ef5bfcc3bb9))
+* **deps:** update dependency react-intl to ^7.1.12 ([#109](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/109)) ([3f5642c](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/3f5642c945a8c331cb384bb0d4850137eba1ff47))
+* improve Input component and update imports in index.ts ([4e179b0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/4e179b0de8d525410ab9c898bf87ed7427f05c33))
+* **Input:** prevent clear input button display when disabled ([263d073](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/263d07394bafb5ead5e3367828e2f293bea31439))
+* **Input:** simplify Icon component by removing useMemo and enhancing styling with styled-components ([d26bd43](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/d26bd43c8ea8e3307df4f6948a64f1a318961ecd))
+
 ## [1.4.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.4.0...v1.4.1) (2025-07-13)
 
 
