@@ -170,7 +170,7 @@ const Input = (props: InputProps) => {
           startIcon={
             selectedItem?.icon ? <Icon src={selectedItem.icon.src} colorMask={selectedItem.icon.colorMask} /> : null
           }
-          onClear={() => field.onChange(props.name, '')}
+          onClear={props.disabled ? undefined : () => field.onChange(props.name, '')}
         >
           {
             items?.map(item => {
