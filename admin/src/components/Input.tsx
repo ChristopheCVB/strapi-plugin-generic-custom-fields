@@ -92,7 +92,13 @@ const Input = (props: InputProps) => {
         const response = await get<ItemsResponse>(
           `/${PLUGIN_ID}/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
         )
-        if (field.value && !response.data.items.find(item => item.value === field.value)) {
+        if (field.value !== undefined && !response.data.items.find(item => {
+          if ((customFieldConfig.type || 'string') === 'string') {
+            return item.value.toString() === field.value!.toString()
+          } else {
+            return item.value === Number(field.value)
+          }
+        })) {
           const responseItem = await get<ItemResponse>(
             `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
           )
@@ -111,7 +117,7 @@ const Input = (props: InputProps) => {
         //     setItems(response.data.items)
         //   }
         // }
-      } else if (field.value) {
+      } else if (field.value !== undefined) {
         const response = await get<ItemResponse>(
           `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
         )
@@ -150,12 +156,18 @@ const Input = (props: InputProps) => {
   ])
 
   useEffect(() => {
-    if (field.value) {
-      setSelectedItem(items?.find(item => item.value === field.value))
+    if (field.value !== undefined && customFieldConfig) {
+      setSelectedItem(items?.find(item => {
+        if ((customFieldConfig.type || 'string') === 'string') {
+          return item.value.toString() === field.value!.toString()
+        } else {
+          return item.value === Number(field.value)
+        }
+      }))
     } else {
       setSelectedItem(undefined)
     }
-  }, [field.value, items])
+  }, [field.value, items, customFieldConfig])
 
   return (
     <DesignSystemProvider theme={theme}>

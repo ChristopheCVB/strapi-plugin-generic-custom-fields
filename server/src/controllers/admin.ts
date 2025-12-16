@@ -58,7 +58,8 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       }
 
       const value = ctx.request.query.value as string
-      return itemResponseSchema.parse(await customField.fetchItem({ value }))
+      const typedValue = (customField.type || 'string') === 'string' ? value : Number(value)
+      return itemResponseSchema.parse(await customField.fetchItem({ value: typedValue }))
     } catch (error) {
       throw error instanceof Error ? error : new Error(`Error fetching CustomField[${ctx.params.uid}] item: ${error}`)
     }
