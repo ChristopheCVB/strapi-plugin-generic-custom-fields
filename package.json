@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "@strapi/design-system": "^2.1.1",
-    "@strapi/icons": "^2.1.0",
+    "@strapi/icons": "^2.1.1",
     "@uidotdev/usehooks": "^2.4.1",
     "react-intl": "^7.1.14",
     "slugify": "^1.6.6",
