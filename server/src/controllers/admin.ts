@@ -38,9 +38,11 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       }
 
       const query = (ctx.request.query.query as string | undefined)
+      const locale = (ctx.request.query.locale as string | undefined)
       // const page = (ctx.request.query.page as string | undefined)
       return itemsResponseSchema.parse(await customField.fetchItems({
         query,
+        locale,
         // page: page ? parseInt(page, 10) : undefined,
       }))
     } catch (error) {
@@ -58,7 +60,8 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
       }
 
       const value = ctx.request.query.value as string
-      return itemResponseSchema.parse(await customField.fetchItem({ value }))
+      const locale = ctx.request.query.locale as string | undefined
+      return itemResponseSchema.parse(await customField.fetchItem({ value, locale }))
     } catch (error) {
       throw error instanceof Error ? error : new Error(`Error fetching CustomField[${ctx.params.uid}] item: ${error}`)
     }
