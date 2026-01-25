@@ -167,7 +167,7 @@ const Input = (props: InputProps) => {
   return (
     <DesignSystemProvider theme={theme}>
       <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={field.error} >
-        <Field.Label>{props.label}</Field.Label>
+        <Field.Label action={props.labelAction}>{props.label}</Field.Label>
         <Combobox
           onChange={(value: string) => field.onChange(props.name, value ?? '')}
           value={field.value}
