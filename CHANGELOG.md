@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.5.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.4.3...v1.5.0) (2026-01-27)
+
+
+### Features
+
+* add locale support ([#181](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/181)) ([22cdb68](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/22cdb68e3e9694c30646104b573a2c06cd33704b))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @strapi/design-system to ^2.1.1 ([#165](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/165)) ([889f7f0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/889f7f027ac3c40654dfe8eae671f6db4ac6be7c))
+* **deps:** update dependency @strapi/design-system to ^2.1.2 ([#170](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/170)) ([3d58e47](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/3d58e4765772ccb04ee33a201c8dd1439077388e))
+* **deps:** update dependency @strapi/icons to ^2.1.1 ([#166](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/166)) ([027c823](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/027c823d20213db02828333a291b1b70858f664c))
+* **deps:** update dependency @strapi/icons to ^2.1.2 ([#169](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/169)) ([72f219c](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/72f219cc3d85902fa6f6055c58611f74c556ca62))
+
 ## [1.4.3](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.4.2...v1.4.3) (2026-01-06)
 
 
