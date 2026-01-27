@@ -1,5 +1,5 @@
 import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/config'
-import { type InputProps, useField, useFetchClient } from '@strapi/strapi/admin'
+import { type InputProps, useField, useFetchClient, useQueryParams } from '@strapi/strapi/admin'
 
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { DesignSystemProvider, Combobox, ComboboxOption, Field } from '@strapi/design-system'
@@ -53,8 +53,11 @@ const Input = (props: InputProps) => {
 
   // @ts-expect-error props.attribute.customField is a string
   const customFieldUID = props.attribute.customField as string
-
+  
   const field = useField<string>(props.name)
+  
+  // @ts-expect-error query.plugins is an object
+  const locale = useQueryParams()[0].query.plugins?.i18n?.locale as string | undefined
 
   const [loading, setLoading] = useState<boolean>(true)
   // const [page, setPage] = useState<number>(1)
@@ -68,7 +71,7 @@ const Input = (props: InputProps) => {
 
   const loadFieldConfig = useCallback(async (localCustomFieldUID: string) => {
     const response = await get<PickSerializable<Config['customFields'][number]>>(
-      `/${PLUGIN_ID}/config/custom-fields/${localCustomFieldUID}`,
+      `/${PLUGIN_ID}/config/custom-fields/${localCustomFieldUID}?locale=${locale}`,
     )
     setCustomFieldConfig(response.data)
   }, [])
@@ -83,6 +86,9 @@ const Input = (props: InputProps) => {
     if (!items || customFieldConfig.searchable/* || customFieldConfig!.paginateItems && items.length < totalItems!*/) {
       if (!props.disabled) {
         const searchParams = new URLSearchParams()
+        if (locale) {
+          searchParams.set('locale', locale)
+        }
         if (customFieldConfig.searchable && debouncedFilter) {
           searchParams.set('query', debouncedFilter)
           // searchParams.set('page', '1')
@@ -94,7 +100,7 @@ const Input = (props: InputProps) => {
         )
         if (field.value && !response.data.items.find(item => item.value === field.value)) {
           const responseItem = await get<ItemResponse>(
-            `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
+            `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}&locale=${locale}`,
           )
           response.data.items.push(responseItem.data)
         }
@@ -113,7 +119,7 @@ const Input = (props: InputProps) => {
         // }
       } else if (field.value) {
         const response = await get<ItemResponse>(
-          `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}`,
+          `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}&locale=${locale}`,
         )
         setItems([response.data])
       }
@@ -124,6 +130,7 @@ const Input = (props: InputProps) => {
     props.disabled,
     customFieldConfig,
     debouncedFilter,
+    locale,
   ])
 
   useEffect(() => {
@@ -160,7 +167,7 @@ const Input = (props: InputProps) => {
   return (
     <DesignSystemProvider theme={theme}>
       <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={field.error} >
-        <Field.Label>{props.label}</Field.Label>
+        <Field.Label action={props.labelAction}>{props.label}</Field.Label>
         <Combobox
           onChange={(value: string) => field.onChange(props.name, value ?? '')}
           value={field.value}

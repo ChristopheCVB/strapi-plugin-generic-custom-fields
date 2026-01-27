@@ -200,9 +200,11 @@ const customFieldSchema = z.object({
   searchable: z.boolean().optional(),
   fetchItems: z.function().args(z.object({
     query: z.string().optional(),
+    locale: z.string().optional(),
   })).returns(z.union([itemsResponseSchema, z.promise(itemsResponseSchema)])),
   fetchItem: z.function().args(z.object({
     value: z.string(),
+    locale: z.string().optional(),
   })).returns(z.union([itemResponseSchema, z.promise(itemResponseSchema)])),
 })
 
