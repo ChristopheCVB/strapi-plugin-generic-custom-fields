@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.0...v1.5.1) (2026-01-30)
+
+
+### Bug Fixes
+
+* defaultTextValue ([ae0432b](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/ae0432b8a45e71a3a8b1947be8db0a35f0540a18))
+* update Input component to use forwardRef ([ae0432b](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/ae0432b8a45e71a3a8b1947be8db0a35f0540a18))
+
 ## [1.5.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.4.3...v1.5.0) (2026-01-27)
 
 
