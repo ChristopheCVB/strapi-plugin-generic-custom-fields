@@ -2,7 +2,7 @@ import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/co
 import { type InputProps, useField, useFetchClient, useQueryParams } from '@strapi/strapi/admin'
 
 import { ChangeEvent, forwardRef, useCallback, useEffect, useState } from 'react'
-import { DesignSystemProvider, Combobox, ComboboxOption, Field } from '@strapi/design-system'
+import { DesignSystemProvider, Combobox, ComboboxOption, Field, TextInput, Loader } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
 import { styled, useTheme } from 'styled-components'
 
@@ -102,8 +102,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
           const responseItem = await get<ItemResponse>(
             `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}&locale=${locale}`,
           )
-          response.data.items.push(responseItem.data)
+          response.data.items.unshift(responseItem.data)
         }
+        setSelectedItem(response.data.items.find(item => item.value === field.value))
         setItems(response.data.items)
         // if (customFieldConfig.searchable && debouncedFilter) {
         //   setTotalItems(response.data.items.length)
@@ -121,6 +122,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
         const response = await get<ItemResponse>(
           `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}&locale=${locale}`,
         )
+        setSelectedItem(response.data)
         setItems([response.data])
       }
     }
@@ -168,10 +170,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
     <DesignSystemProvider theme={theme}>
       <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={field.error} >
         <Field.Label action={props.labelAction}>{props.label}</Field.Label>
-        <Combobox
+        { items ? (<Combobox
           ref={forwardedRef}
           onChange={(value: string) => field.onChange(props.name, value ?? '')}
-          defaultTextValue={field.value}
+          defaultTextValue={selectedItem?.label || field.value}
           value={field.value}
           placeholder={props.placeholder}
           disabled={props.disabled}
@@ -201,7 +203,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
               )
             })
           }
-        </Combobox>
+        </Combobox>) : <TextInput disabled value={field.value} startAction={<Loader small />} />}
         <Field.Hint />
         <Field.Error />
       </Field.Root>
