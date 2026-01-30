@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.3...v1.5.4) (2026-01-30)
+
+
+### Bug Fixes
+
+* update Input component to set selected item correctly and improve item loading ([e3cfcf0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/e3cfcf0d685522706ef66f1715d8abb814e7842d))
+
 ## [1.5.3](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.2...v1.5.3) (2026-01-30)
 
 
