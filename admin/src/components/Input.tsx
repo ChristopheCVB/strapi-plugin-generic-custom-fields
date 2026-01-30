@@ -1,7 +1,7 @@
 import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/config'
 import { type InputProps, useField, useFetchClient, useQueryParams } from '@strapi/strapi/admin'
 
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, forwardRef, useCallback, useEffect, useState } from 'react'
 import { DesignSystemProvider, Combobox, ComboboxOption, Field } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
 import { styled, useTheme } from 'styled-components'
@@ -46,7 +46,7 @@ const Icon = styled.span.withConfig({
   background-color: currentColor;
 `
 
-const Input = (props: InputProps) => {
+const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => {
   const theme = useTheme()
 
   const { get } = useFetchClient()
@@ -169,7 +169,9 @@ const Input = (props: InputProps) => {
       <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={field.error} >
         <Field.Label action={props.labelAction}>{props.label}</Field.Label>
         <Combobox
+          ref={forwardedRef}
           onChange={(value: string) => field.onChange(props.name, value ?? '')}
+          defaultTextValue={field.value}
           value={field.value}
           placeholder={props.placeholder}
           disabled={props.disabled}
@@ -205,6 +207,6 @@ const Input = (props: InputProps) => {
       </Field.Root>
     </DesignSystemProvider>
   )
-}
+})
 
 export default Input

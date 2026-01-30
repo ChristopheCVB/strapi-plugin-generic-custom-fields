@@ -1,7 +1,6 @@
 import type { Config } from '../../server/src/config'
 import type { StrapiApp } from '@strapi/strapi/admin'
 
-import { ComponentType } from 'react'
 import { getFetchClient } from '@strapi/strapi/admin'
 import slugify from 'slugify'
 
@@ -34,7 +33,8 @@ export default {
           icon: customField.icon || 'PuzzlePiece',
         }),
         components: {
-          Input: () => import('./components/Input') as Promise<{ default: ComponentType }>,
+          // @ts-expect-error - TODO: fix this?
+          Input: () => import('./components/Input'),
         },
         options: {
           advanced: [
