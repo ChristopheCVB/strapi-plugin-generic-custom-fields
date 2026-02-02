@@ -1,5 +1,5 @@
 import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/config'
-import { type InputProps, useField, useFetchClient, useQueryParams } from '@strapi/strapi/admin'
+import { type InputProps, useFetchClient, useQueryParams } from '@strapi/strapi/admin'
 
 import { ChangeEvent, forwardRef, useCallback, useEffect, useState } from 'react'
 import { DesignSystemProvider, Combobox, ComboboxOption, Field, TextInput, Loader } from '@strapi/design-system'
@@ -51,14 +51,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
 
   const { get } = useFetchClient()
 
-  // @ts-expect-error props.attribute.customField is a string
-  const customFieldUID = props.attribute.customField as string
-  
-  const field = useField<string>(props.name)
-  
+  // @ts-expect-error props is not fully typed
+  const { value, onChange, error, attribute: { customField: customFieldUID } } = props as {
+    attribute: {
+      customField: string
+    }
+    value?: string | null
+    error?: string | null
+    onChange: (event: { target: { name: string, value: string } }) => void
+  }
+
   // @ts-expect-error query.plugins is an object
   const locale = useQueryParams()[0].query.plugins?.i18n?.locale as string | undefined
-
+  
   const [loading, setLoading] = useState<boolean>(true)
   // const [page, setPage] = useState<number>(1)
   // const [totalItems, setTotalItems] = useState<number | undefined>(undefined)
@@ -70,8 +75,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
   const [selectedItem, setSelectedItem] = useState<ItemResponse | undefined>(undefined)
 
   const loadFieldConfig = useCallback(async (localCustomFieldUID: string) => {
+    const searchParams = new URLSearchParams()
+    if (locale) {
+      searchParams.set('locale', locale)
+    }
     const response = await get<PickSerializable<Config['customFields'][number]>>(
-      `/${PLUGIN_ID}/config/custom-fields/${localCustomFieldUID}?locale=${locale}`,
+      `/${PLUGIN_ID}/config/custom-fields/${localCustomFieldUID}?${searchParams.toString()}`,
     )
     setCustomFieldConfig(response.data)
   }, [])
@@ -98,14 +107,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
         const response = await get<ItemsResponse>(
           `/${PLUGIN_ID}/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
         )
-        if (field.value && !response.data.items.find(item => item.value === field.value)) {
+        if (value && !response.data.items.find(item => item.value === value)) {
+          const searchParams = new URLSearchParams()
+          searchParams.set('value', value)
+          if (locale) {
+            searchParams.set('locale', locale)
+          }
           const responseItem = await get<ItemResponse>(
-            `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}&locale=${locale}`,
+            `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?${searchParams.toString()}`,
           )
           response.data.items.unshift(responseItem.data)
         }
-        setSelectedItem(response.data.items.find(item => item.value === field.value))
         setItems(response.data.items)
+        setSelectedItem(response.data.items.find(item => item.value === value))
         // if (customFieldConfig.searchable && debouncedFilter) {
         //   setTotalItems(response.data.items.length)
         //   setItems(response.data.items)
@@ -118,12 +132,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
         //     setItems(response.data.items)
         //   }
         // }
-      } else if (field.value) {
+      } else if (value) {
+        const searchParams = new URLSearchParams()
+        searchParams.set('value', value)
+        if (locale) {
+          searchParams.set('locale', locale)
+        }
         const response = await get<ItemResponse>(
-          `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?value=${encodeURIComponent(field.value)}&locale=${locale}`,
+          `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?${searchParams.toString()}`,
         )
-        setSelectedItem(response.data)
         setItems([response.data])
+        setSelectedItem(response.data)
       }
     }
 
@@ -159,51 +178,59 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
   ])
 
   useEffect(() => {
-    if (field.value) {
-      setSelectedItem(items?.find(item => item.value === field.value))
+    if (value) {
+      setSelectedItem(items?.find(item => item.value === value))
     } else {
       setSelectedItem(undefined)
     }
-  }, [field.value, items])
+  }, [value, items])
 
   return (
     <DesignSystemProvider theme={theme}>
-      <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={field.error} >
+      <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={error} >
         <Field.Label action={props.labelAction}>{props.label}</Field.Label>
-        { items ? (<Combobox
-          ref={forwardedRef}
-          onChange={(value: string) => field.onChange(props.name, value ?? '')}
-          defaultTextValue={selectedItem?.label || field.value}
-          value={field.value}
-          placeholder={props.placeholder}
-          disabled={props.disabled}
-          loading={loading}
-          autocomplete={{ type: 'list', filter: 'contains' }}
-          onInputChange={(ev: ChangeEvent<HTMLInputElement>) => setFilter(ev.target.value)}
-          filterValue={customFieldConfig?.searchable ? '' : undefined}
-          // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
-          // onLoadMore={() => setPage(prevPage => prevPage + 1)}
-          startIcon={
-            selectedItem?.icon ? <Icon src={selectedItem.icon.src} colorMask={selectedItem.icon.colorMask} /> : null
-          }
-          onClear={props.disabled ? undefined : () => field.onChange(props.name, '')}
-        >
-          {
-            items?.map(item => {
-              return (
-                <ComboboxOption
-                  key={item.value}
-                  value={item.value}
-                >
-                  {
-                    item.icon ? <Icon src={item.icon.src} colorMask={item.icon.colorMask} /> : null
-                  }
-                  {item.label}
-                </ComboboxOption>
-              )
-            })
-          }
-        </Combobox>) : <TextInput disabled value={field.value} startAction={<Loader small />} />}
+        { items ?
+          (<Combobox
+            key={`${props.name}-combobox`}
+            ref={forwardedRef}
+            onChange={(newValue: string) => onChange({ target: { name: props.name, value: newValue ?? '' } })}
+            defaultTextValue={selectedItem?.label || value || undefined}
+            value={value}
+            placeholder={props.placeholder}
+            disabled={props.disabled}
+            loading={loading}
+            autocomplete={{ type: 'list', filter: 'contains' }}
+            onInputChange={(ev: ChangeEvent<HTMLInputElement>) => setFilter(ev.target.value)}
+            filterValue={customFieldConfig?.searchable ? '' : undefined}
+            // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
+            // onLoadMore={() => setPage(prevPage => prevPage + 1)}
+            startIcon={
+              selectedItem?.icon ?
+                <Icon src={selectedItem.icon.src} colorMask={selectedItem.icon.colorMask} />
+                : null
+            }
+            onClear={
+              props.disabled ?
+                undefined :
+                () => onChange({ target: { name: props.name, value: '' } })
+            }
+          >
+            {
+              items.map(item => {
+                return (
+                  <ComboboxOption
+                    key={item.value}
+                    value={item.value}
+                  >
+                    { item.icon ? <Icon src={item.icon.src} colorMask={item.icon.colorMask} /> : null }
+                    { item.label }
+                  </ComboboxOption>
+                )
+              })
+            }
+          </Combobox>)
+          : (<TextInput disabled value={value ?? ''} startAction={<Loader small />} key={`${props.name}-input`} />)
+        }
         <Field.Hint />
         <Field.Error />
       </Field.Root>
