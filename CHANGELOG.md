@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.5](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.4...v1.5.5) (2026-02-02)
+
+
+### Bug Fixes
+
+* remove useField usage ([00bf7d8](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/00bf7d88bddb4e3ac8bc08ea4f4248be42f6a3d8))
+
 ## [1.5.4](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.3...v1.5.4) (2026-01-30)
 
 
