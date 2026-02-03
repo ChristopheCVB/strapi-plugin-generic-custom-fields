@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.6](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.5...v1.5.6) (2026-02-03)
+
+
+### Bug Fixes
+
+* **deps:** rollback to @strapi/design-system@2.0.0-rc.31 ([0d22a24](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/0d22a2489c5d8aa4e15faa9d1014bcb9c68d55b9))
+
 ## [1.5.5](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.4...v1.5.5) (2026-02-02)
 
 
