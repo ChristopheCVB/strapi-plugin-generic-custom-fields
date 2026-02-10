@@ -44,6 +44,7 @@ export default defineConfig(
           varsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/consistent-generic-constructors': 'off',
       '@stylistic/member-delimiter-style': [
         'error',
         {
