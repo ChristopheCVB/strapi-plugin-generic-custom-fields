@@ -98,7 +98,7 @@
     "react-router-dom": "^6.30.3",
     "styled-components": "^6.3.9",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.55.0",
+    "typescript-eslint": "^8.56.0",
     "vitest": "^4.0.18"
   },
   "peerDependencies": {
