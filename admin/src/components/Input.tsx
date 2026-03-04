@@ -2,9 +2,9 @@ import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/co
 import { type InputProps, useFetchClient, useQueryParams } from '@strapi/strapi/admin'
 
 import { ChangeEvent, forwardRef, useCallback, useEffect, useState } from 'react'
-import { DesignSystemProvider, Combobox, ComboboxOption, Field, TextInput, Loader } from '@strapi/design-system'
+import { Combobox, ComboboxOption, Field, TextInput, Loader } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
-import { styled, useTheme } from 'styled-components'
+import { styled } from 'styled-components'
 
 import { PLUGIN_ID } from '../pluginId'
 
@@ -47,8 +47,6 @@ const Icon = styled.span.withConfig({
 `
 
 const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => {
-  const theme = useTheme()
-
   const { get } = useFetchClient()
 
   // @ts-expect-error props is not fully typed
@@ -186,55 +184,53 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
   }, [value, items])
 
   return (
-    <DesignSystemProvider theme={theme}>
-      <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={error} >
-        <Field.Label action={props.labelAction}>{props.label}</Field.Label>
-        { items ?
-          (<Combobox
-            key={`${props.name}-combobox`}
-            ref={forwardedRef}
-            onChange={(newValue: string) => onChange({ target: { name: props.name, value: newValue ?? '' } })}
-            defaultTextValue={selectedItem?.label || value || undefined}
-            value={value}
-            placeholder={props.placeholder}
-            disabled={props.disabled}
-            loading={loading}
-            autocomplete={{ type: 'list', filter: 'contains' }}
-            onInputChange={(ev: ChangeEvent<HTMLInputElement>) => setFilter(ev.target.value)}
-            filterValue={customFieldConfig?.searchable ? '' : undefined}
-            // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
-            // onLoadMore={() => setPage(prevPage => prevPage + 1)}
-            startIcon={
-              selectedItem?.icon ?
-                <Icon src={selectedItem.icon.src} colorMask={selectedItem.icon.colorMask} />
-                : null
-            }
-            onClear={
-              props.disabled ?
-                undefined :
-                () => onChange({ target: { name: props.name, value: '' } })
-            }
-          >
-            {
-              items.map(item => {
-                return (
-                  <ComboboxOption
-                    key={item.value}
-                    value={item.value}
-                  >
-                    { item.icon ? <Icon src={item.icon.src} colorMask={item.icon.colorMask} /> : null }
-                    { item.label }
-                  </ComboboxOption>
-                )
-              })
-            }
-          </Combobox>)
-          : (<TextInput disabled value={value ?? ''} startAction={<Loader small />} key={`${props.name}-input`} />)
-        }
-        <Field.Hint />
-        <Field.Error />
-      </Field.Root>
-    </DesignSystemProvider>
+    <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={error} >
+      <Field.Label action={props.labelAction}>{props.label}</Field.Label>
+      { items ?
+        (<Combobox
+          key={`${props.name}-combobox`}
+          ref={forwardedRef}
+          onChange={(newValue: string) => onChange({ target: { name: props.name, value: newValue ?? '' } })}
+          defaultTextValue={selectedItem?.label || value || undefined}
+          value={value}
+          placeholder={props.placeholder}
+          disabled={props.disabled}
+          loading={loading}
+          autocomplete={{ type: 'list', filter: 'contains' }}
+          onInputChange={(ev: ChangeEvent<HTMLInputElement>) => setFilter(ev.target.value)}
+          filterValue={customFieldConfig?.searchable ? '' : undefined}
+          // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
+          // onLoadMore={() => setPage(prevPage => prevPage + 1)}
+          startIcon={
+            selectedItem?.icon ?
+              <Icon src={selectedItem.icon.src} colorMask={selectedItem.icon.colorMask} />
+              : null
+          }
+          onClear={
+            props.disabled ?
+              undefined :
+              () => onChange({ target: { name: props.name, value: '' } })
+          }
+        >
+          {
+            items.map(item => {
+              return (
+                <ComboboxOption
+                  key={item.value}
+                  value={item.value}
+                >
+                  { item.icon ? <Icon src={item.icon.src} colorMask={item.icon.colorMask} /> : null }
+                  { item.label }
+                </ComboboxOption>
+              )
+            })
+          }
+        </Combobox>)
+        : (<TextInput disabled value={value ?? ''} startAction={<Loader small />} key={`${props.name}-input`} />)
+      }
+      <Field.Hint />
+      <Field.Error />
+    </Field.Root>
   )
 })
 
