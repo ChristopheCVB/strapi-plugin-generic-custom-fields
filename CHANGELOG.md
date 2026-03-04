@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.6...v2.0.0) (2026-03-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* update dependencies and remove DSProvider usage from Input
+
+### Features
+
+* update dependencies and remove DSProvider usage from Input ([b0e696e](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/b0e696e412613dca07a533ae3606af526d22219c))
+
 ## [1.5.6](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.5...v1.5.6) (2026-02-03)
 
 
