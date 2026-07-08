@@ -88,12 +88,12 @@
     "@strapi/typescript-utils": "^5.50.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/koa": "^2.15.0",
-    "@types/react": "^18.3.28",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^18.3.7",
     "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^10.6.0",
     "globals": "^17.7.0",
-    "react": "^18.3.1",
+    "react": "^19.2.7",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.3",
     "styled-components": "^6.4.3",
@@ -104,7 +104,7 @@
   "peerDependencies": {
     "@strapi/sdk-plugin": "^5.4.0",
     "@strapi/strapi": "^5.38.0",
-    "react": "^18.3.1",
+    "react": "^19.2.7",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.3",
     "styled-components": "^6.3.11"
