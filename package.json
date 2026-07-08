@@ -74,32 +74,32 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@strapi/design-system": "2.2.0",
-    "@strapi/icons": "2.2.0",
+    "@strapi/design-system": "2.2.1",
+    "@strapi/icons": "2.2.1",
     "@uidotdev/usehooks": "^2.4.1",
     "react-intl": "^7.1.14",
-    "slugify": "^1.6.6",
+    "slugify": "^1.6.9",
     "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@strapi/sdk-plugin": "^5.4.0",
-    "@strapi/strapi": "^5.38.0",
-    "@strapi/typescript-utils": "^5.38.0",
+    "@strapi/sdk-plugin": "^6.1.1",
+    "@strapi/strapi": "^5.50.0",
+    "@strapi/typescript-utils": "^5.50.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/koa": "^2.15.0",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
-    "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "^10.0.3",
-    "globals": "^17.4.0",
+    "@vitest/coverage-v8": "^4.1.10",
+    "eslint": "^10.6.0",
+    "globals": "^17.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.3",
-    "styled-components": "^6.3.11",
+    "styled-components": "^6.4.3",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1",
-    "vitest": "^4.0.18"
+    "typescript-eslint": "^8.63.0",
+    "vitest": "^4.1.10"
   },
   "peerDependencies": {
     "@strapi/sdk-plugin": "^5.4.0",
@@ -112,9 +112,5 @@
   "engines": {
     "node": ">=22.22.1"
   },
-  "packageManager": "pnpm@10.30.3",
-  "volta": {
-    "node": "22.22.1",
-    "pnpm": "10.30.3"
-  }
+  "packageManager": "pnpm@11.10.0"
 }
