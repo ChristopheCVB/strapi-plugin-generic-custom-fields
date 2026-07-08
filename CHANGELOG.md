@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.0...v2.0.1) (2026-07-08)
+
+
+### Bug Fixes
+
+* **deps:** update ([d00185b](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/d00185b6a1938ae6e3b093bb20477f7c22555bf3))
+* **deps:** update peerDependencies ([a019217](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/a019217980f4d1577d4d2d30e6912fcce4c545ba))
+
 ## [2.0.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v1.5.6...v2.0.0) (2026-03-04)
 
 
