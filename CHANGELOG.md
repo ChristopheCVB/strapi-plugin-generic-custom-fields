@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.2...v2.0.3) (2026-07-09)
+
+
+### Bug Fixes
+
+* **release:** update NPM publish command to include --no-git-checks ([516769e](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/516769e0f76948d37073020baa40005688eda5bd))
+
 ## [2.0.2](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.1...v2.0.2) (2026-07-09)
 
 
