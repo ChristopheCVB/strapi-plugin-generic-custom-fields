@@ -30,7 +30,7 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v7
 
-      - name: Setup pnpm 📦️
+      - name: Setup pnpm ✨
         uses: pnpm/action-setup@v6
 
       - name: Use Node ✨
@@ -50,6 +50,6 @@ jobs:
         run: pnpm verify
 
       - name: Publish to NPM 📦️
-        uses: simenandre/publish-with-pnpm@v2
-        with:
-          npm-auth-token: ${{ secrets.NPM_TOKEN }}
+        run: pnpm publish --access public 
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
