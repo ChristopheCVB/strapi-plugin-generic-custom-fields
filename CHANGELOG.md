@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.1...v2.0.2) (2026-07-09)
+
+
+### Bug Fixes
+
+* **deps:** remove sdk-plugin from peerDeps ([2ed154c](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/2ed154c3c8e55eaff198fe1f363895d20ad12f8d))
+
 ## [2.0.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.0...v2.0.1) (2026-07-08)
 
 
