@@ -74,8 +74,8 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@strapi/design-system": "2.2.1",
-    "@strapi/icons": "2.2.1",
+    "@strapi/design-system": "2.2.2",
+    "@strapi/icons": "2.2.2",
     "@uidotdev/usehooks": "^2.4.1",
     "react-intl": "^7.1.14",
     "slugify": "^1.6.9",
