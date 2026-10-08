@@ -11,9 +11,15 @@ import { getTranslation } from './utils/getTranslation'
 
 export default {
   async register(app: StrapiApp) {
+    app.registerPlugin({
+      id: PLUGIN_ID,
+      initializer: Initializer,
+      name: PLUGIN_ID,
+    })
+
     const { get } = getFetchClient()
 
-    const customFields = await get<PickSerializable<Config['customFields'][number]>[]>(`/${PLUGIN_ID}/config/custom-fields`).then(({ data }) => data)
+    const customFields = await get<Pick<Config['customFields'][number], 'name' | 'description' | 'icon'>[]>(`/${PLUGIN_ID}/config/custom-fields`).then(({ data }) => data)
     
     for (const customField of customFields) {
       const customFieldName = slugify(customField.name, { lower: true })
@@ -86,12 +92,6 @@ export default {
         },
       })
     }
-
-    app.registerPlugin({
-      id: PLUGIN_ID,
-      initializer: Initializer,
-      name: PLUGIN_ID,
-    })
   },
 
   registerTrads({ locales }: { locales: string[] }) {
