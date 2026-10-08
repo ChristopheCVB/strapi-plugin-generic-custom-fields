@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.5](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.4...v2.0.5) (2026-10-08)
+
+
+### Bug Fixes
+
+* **ci:** allow manually triggering npm release workflow ([#260](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/260)) ([4281774](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/428177473fceaf737077fb532480e004614b4270))
+
 ## [2.0.4](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.3...v2.0.4) (2026-10-08)
 
 
