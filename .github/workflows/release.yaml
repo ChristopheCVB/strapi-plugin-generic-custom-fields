@@ -4,19 +4,14 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-    inputs:
-      tag:
-        description: Tag to publish (e.g. v2.0.4)
-        required: true
 
 jobs:
   test:
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v7
-        with:
-          ref: ${{ inputs.tag }}
 
       - name: Setup pnpm 📦️
         uses: pnpm/action-setup@v6
@@ -36,8 +31,6 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v7
-        with:
-          ref: ${{ inputs.tag }}
 
       - name: Setup pnpm ✨
         uses: pnpm/action-setup@v6
