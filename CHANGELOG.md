@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.6](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.5...v2.0.6) (2026-10-08)
+
+
+### Bug Fixes
+
+* **ci:** publish to npm via OIDC trusted publishing ([#262](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/262)) ([8966621](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/8966621eb296f6a2418726a26c764d0c59544ff7))
+
 ## [2.0.5](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.4...v2.0.5) (2026-10-08)
 
 
