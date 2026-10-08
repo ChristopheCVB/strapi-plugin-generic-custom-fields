@@ -4,7 +4,8 @@ export default [
     path: '/config/custom-fields',
     handler: 'admin.configCustomFields',
     config: {
-      policies: ['admin::isAuthenticatedAdmin'],
+      // Public: the admin registers custom fields at boot, before the user is logged in
+      auth: false,
     },
   },
   {

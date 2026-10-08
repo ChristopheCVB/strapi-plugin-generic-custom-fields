@@ -61,11 +61,11 @@ describe('admin controller', () => {
   })
 
   describe('configCustomFields', () => {
-    it('should return custom fields from config', () => {
+    it('should return only public fields from config', () => {
       const adminController = controller({ strapi: mockStrapi })
       const result = adminController.configCustomFields()
 
-      expect(result).toEqual(mockCustomFields)
+      expect(result).toStrictEqual([{ name: 'Test Field', description: 'A test field', icon: 'Star' }])
     })
   })
 

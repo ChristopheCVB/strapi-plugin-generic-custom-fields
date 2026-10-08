@@ -14,7 +14,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => ({
   },
 
   configCustomFields() {
-    return this.getConfigCustomFields()
+    return this.getConfigCustomFields().map(({ name, description, icon }) => ({ name, description, icon }))
   },
 
   configCustomField(ctx: Context): Config['customFields'][number] {
