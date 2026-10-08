@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.4](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.3...v2.0.4) (2026-10-08)
+
+
+### Bug Fixes
+
+* **admin:** register custom fields before admin login ([#259](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/259)) ([f6c6854](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/f6c68546c90d345a155f55569105ef816127d6d3))
+* **deps:** bump the npm-minor-patch group with 9 updates ([#250](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/250)) ([f35c48c](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/f35c48c5fbfe62536362cddd9301141bcc1b7a2e))
+
 ## [2.0.3](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.2...v2.0.3) (2026-07-09)
 
 
