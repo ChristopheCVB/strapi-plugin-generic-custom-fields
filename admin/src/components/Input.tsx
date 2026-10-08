@@ -69,7 +69,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
   const [filter, setFilter] = useState<string>('')
   const debouncedFilter = useDebounce(filter, 600)
 
-  const [customFieldConfig, setCustomFieldConfig] = useState<PickSerializable<Config['customFields'][number]> | undefined>(undefined)
+  const [customFieldConfig, setCustomFieldConfig] = useState<Pick<Config['customFields'][number], 'searchable'> | undefined>(undefined)
   const [selectedItem, setSelectedItem] = useState<ItemResponse | undefined>(undefined)
 
   const loadFieldConfig = useCallback(async (localCustomFieldUID: string) => {
@@ -77,7 +77,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
     if (locale) {
       searchParams.set('locale', locale)
     }
-    const response = await get<PickSerializable<Config['customFields'][number]>>(
+    const response = await get<Pick<Config['customFields'][number], 'searchable'>>(
       `/${PLUGIN_ID}/config/custom-fields/${localCustomFieldUID}?${searchParams.toString()}`,
     )
     setCustomFieldConfig(response.data)
@@ -184,7 +184,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
   }, [value, items])
 
   return (
-    <Field.Root disabled={props.disabled} required={props.required} hint={props.hint} name={props.name} id={props.name} error={error} >
+    <Field.Root required={props.required} hint={props.hint} name={props.name} id={props.name} error={error ?? undefined} >
       <Field.Label action={props.labelAction}>{props.label}</Field.Label>
       { items ?
         (<Combobox
@@ -192,7 +192,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
           ref={forwardedRef}
           onChange={(newValue: string) => onChange({ target: { name: props.name, value: newValue ?? '' } })}
           defaultTextValue={selectedItem?.label || value || undefined}
-          value={value}
+          value={value ?? ''}
           placeholder={props.placeholder}
           disabled={props.disabled}
           loading={loading}
