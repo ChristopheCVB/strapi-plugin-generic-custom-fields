@@ -14,7 +14,8 @@ updates:
       - "npm"
 
     commit-message:
-      prefix: "chore"
+      prefix: "fix"
+      prefix-development: "chore"
       include: "scope"
 
     groups:
