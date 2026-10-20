@@ -67,3 +67,26 @@ This configuration allows you to define custom fields that can fetch items eithe
 ### Example Configuration
 
 Check Wiki page for [Example Implementations](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/wiki/Example-implementations)
+
+## Development
+
+Install [mise](https://mise.jdx.dev/) and activate it in your shell, then run:
+
+```sh
+mise trust
+mise install
+pnpm install --frozen-lockfile
+```
+
+Mise installs Node 22 and enables Corepack, which selects the pnpm version declared in `package.json`.
+
+```sh
+pnpm typecheck:front
+pnpm typecheck:back
+pnpm lint
+pnpm test --run
+pnpm build
+pnpm verify
+```
+
+Pull requests and releases share CI: setup, parallel typecheck/lint/test jobs, then build and verify. The release job installs dependencies, builds, verifies, and publishes as before. Manual releases must target a tag.

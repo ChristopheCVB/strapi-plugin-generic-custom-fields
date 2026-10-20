@@ -1,0 +1,27 @@
+name: Setup
+description: Install mise tools and project dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Setup mise
+      uses: jdx/mise-action@v5
+
+    - name: Enable Corepack and resolve versions
+      id: tools
+      shell: bash
+      run: |
+        corepack enable
+        echo "node=$(node --version)" >> "$GITHUB_OUTPUT"
+        echo "pnpm=$(pnpm --version)" >> "$GITHUB_OUTPUT"
+        echo "store=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+    - name: Cache pnpm store
+      uses: actions/cache@v6
+      with:
+        path: ${{ steps.tools.outputs.store }}
+        key: pnpm-${{ runner.os }}-${{ runner.arch }}-${{ steps.tools.outputs.node }}-${{ steps.tools.outputs.pnpm }}-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml') }}
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
