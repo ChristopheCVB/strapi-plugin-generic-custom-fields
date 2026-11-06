@@ -51,6 +51,18 @@ export default {
               },
               items: [
                 {
+                  name: 'default',
+                  type: 'text',
+                  intlLabel: {
+                    id: 'content-type-builder.form.attribute.settings.default',
+                    defaultMessage: 'Default value',
+                  },
+                  description: {
+                    id: getTranslation('options.advanced.defaultField.description'),
+                    defaultMessage: 'Enter the stored item value, not its label',
+                  },
+                },
+                {
                   name: 'required',
                   type: 'checkbox',
                   intlLabel: {
