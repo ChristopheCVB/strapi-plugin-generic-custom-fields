@@ -9,7 +9,7 @@ export default defineConfig(
     files: ['**/*.{js,mjs,cjs,ts}'],
   },
   {
-    ignores: ['.strapi', '**/dist', 'types/generated'],
+    ignores: ['**/.strapi/**', '**/dist/**', '**/types/generated/**'],
   },
   {
     languageOptions: {

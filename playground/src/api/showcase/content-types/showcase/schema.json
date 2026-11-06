@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "showcases",
+  "info": {
+    "singularName": "showcase",
+    "pluralName": "showcases",
+    "displayName": "Showcase"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "icon": {
+      "type": "customField",
+      "customField": "plugin::generic-custom-fields.iconify-icon"
+    },
+    "internalDocument": {
+      "type": "customField",
+      "customField": "plugin::generic-custom-fields.internal-document"
+    },
+    "linkTarget": {
+      "type": "customField",
+      "customField": "plugin::generic-custom-fields.link-target",
+      "default": "_self",
+      "required": true
+    },
+    "uniqueIcon": {
+      "type": "customField",
+      "customField": "plugin::generic-custom-fields.iconify-icon",
+      "unique": true
+    },
+    "privateIcon": {
+      "type": "customField",
+      "customField": "plugin::generic-custom-fields.iconify-icon",
+      "private": true
+    }
+  }
+}

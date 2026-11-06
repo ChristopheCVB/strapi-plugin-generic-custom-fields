@@ -16,6 +16,8 @@ import policies from './policies'
 import routes from './routes'
 import services from './services'
 
+export type { Config, ItemResponse, ItemsResponse } from './config'
+
 export default {
   register: register as unknown,
   bootstrap: bootstrap as unknown,

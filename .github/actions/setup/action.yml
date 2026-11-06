@@ -20,7 +20,7 @@ runs:
       uses: actions/cache@v6
       with:
         path: ${{ steps.tools.outputs.store }}
-        key: pnpm-${{ runner.os }}-${{ runner.arch }}-${{ steps.tools.outputs.node }}-${{ steps.tools.outputs.pnpm }}-${{ hashFiles('package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml') }}
+        key: pnpm-${{ runner.os }}-${{ runner.arch }}-${{ steps.tools.outputs.node }}-${{ steps.tools.outputs.pnpm }}-${{ hashFiles('**/package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml') }}
 
     - name: Install dependencies
       shell: bash

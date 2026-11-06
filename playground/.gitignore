@@ -1,0 +1,11 @@
+.env*
+!.env.example
+.cache/
+.strapi/
+.strapi-updater.json
+*.tsbuildinfo
+.tmp/
+.tsbuildinfo
+types/generated/
+public/uploads/*
+!public/uploads/.gitkeep

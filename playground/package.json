@@ -1,0 +1,31 @@
+{
+  "name": "generic-custom-fields-playground",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "develop": "strapi develop --no-install-deps",
+    "build": "strapi build",
+    "start": "strapi start",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json",
+    "smoke": "vitest run --config vitest.smoke.config.ts"
+  },
+  "dependencies": {
+    "@iconify/json": "2.2.553",
+    "@iconify/utils": "^3.1.7",
+    "@strapi/strapi": "5.61.0",
+    "better-sqlite3": "13.0.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.30.6",
+    "strapi-plugin-generic-custom-fields": "workspace:*",
+    "styled-components": "6.4.1"
+  },
+  "devDependencies": {
+    "@iconify/types": "^2.0.0",
+    "@strapi/typescript-utils": "5.61.0",
+    "@types/node": "22.20.0",
+    "@types/react": "18.3.2",
+    "@types/react-dom": "18.3.0",
+    "typescript": "5.9.3"
+  }
+}

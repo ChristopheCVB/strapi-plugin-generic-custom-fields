@@ -1,3 +1,6 @@
+packages:
+  - playground
+
 allowBuilds:
   '@swc/core': true
   core-js-pure: true

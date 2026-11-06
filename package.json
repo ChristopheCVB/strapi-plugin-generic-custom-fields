@@ -71,7 +71,12 @@
     "lint:fix": "eslint . --fix",
     "test": "vitest",
     "test:watch": "vitest watch",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "playground:dev": "nodemon --watch admin/src --watch server/src --ext ts,tsx,js,json,css,svg --delay 500ms --signal SIGTERM --exec \"pnpm build && pnpm --dir playground develop\"",
+    "playground:build": "pnpm build && pnpm --dir playground build",
+    "playground:start": "pnpm --dir playground start",
+    "playground:smoke": "pnpm --dir playground smoke",
+    "typecheck:playground": "pnpm --dir playground typecheck"
   },
   "dependencies": {
     "@strapi/design-system": "2.2.4",
@@ -87,12 +92,14 @@
     "@strapi/typescript-utils": "^5.61.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/koa": "2.15.2",
+    "@types/node": "22.20.0",
     "@types/react": "18.3.2",
     "@types/react-dom": "18.3.0",
     "@vitest/browser-playwright": "^5.1.0",
     "@vitest/coverage-v8": "^5.1.0",
     "eslint": "^10.14.0",
     "globals": "^17.14.0",
+    "nodemon": "^3.1.14",
     "playwright": "^1.65.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",

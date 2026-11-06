@@ -73,3 +73,19 @@ jobs:
         run: pnpm build
       - name: Verify
         run: pnpm verify
+
+  playground:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: Build playground and plugin
+        run: pnpm playground:build
+      - name: Type check playground
+        run: pnpm --dir playground typecheck
+      - name: Test playground field sources
+        run: pnpm test --run --project playground
+      - name: Boot and check playground
+        run: pnpm playground:smoke

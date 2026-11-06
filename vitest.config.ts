@@ -7,6 +7,13 @@ export default defineConfig({
     projects: [
       {
         test: {
+          name: 'playground',
+          environment: 'node',
+          include: ['tests/playground/{config,src}/**/*.test.ts'],
+        },
+      },
+      {
+        test: {
           name: 'server',
           environment: 'node',
           include: ['tests/server/**/*.test.ts'],
