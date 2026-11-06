@@ -65,8 +65,8 @@
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",
-    "typecheck:front": "tsc --noEmit -p admin/tsconfig.json",
-    "typecheck:back": "tsc --noEmit -p server/tsconfig.json",
+    "typecheck:admin": "tsc --noEmit -p admin/tsconfig.json",
+    "typecheck:server": "tsc --noEmit -p server/tsconfig.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest",
@@ -77,39 +77,41 @@
     "@strapi/design-system": "2.2.4",
     "@strapi/icons": "2.2.4",
     "@uidotdev/usehooks": "^2.4.1",
-    "react-intl": "^7.1.14",
     "slugify": "^1.6.9",
-    "zod": "^3.25.76"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@strapi/sdk-plugin": "^6.1.1",
-    "@strapi/strapi": "^5.50.0",
-    "@strapi/typescript-utils": "^5.50.0",
+    "@strapi/strapi": "^5.61.0",
+    "@strapi/typescript-utils": "^5.61.0",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "@types/koa": "^2.15.0",
-    "@types/react": "^18.3.28",
-    "@types/react-dom": "^18.3.7",
-    "@vitest/coverage-v8": "^4.1.10",
-    "eslint": "^10.6.0",
-    "globals": "^17.7.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.3",
-    "styled-components": "^6.4.3",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.63.0",
-    "vitest": "^4.1.10"
+    "@types/koa": "2.15.2",
+    "@types/react": "18.3.2",
+    "@types/react-dom": "18.3.0",
+    "@vitest/browser-playwright": "^5.1.0",
+    "@vitest/coverage-v8": "^5.1.0",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "playwright": "^1.65.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.30.6",
+    "styled-components": "6.4.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.1.0",
+    "vitest-browser-react": "^2.3.0"
   },
   "peerDependencies": {
     "@strapi/strapi": "^5.38.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.3",
-    "styled-components": "^6.4.3"
+    "styled-components": "^6.0.0"
   },
   "engines": {
     "node": ">=22.22.1"
   },
-  "packageManager": "pnpm@11.10.0"
+  "packageManager": "pnpm@12.18.0"
 }

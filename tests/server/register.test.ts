@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import register from '../register'
-import { PLUGIN_ID } from '../pluginId'
+import register from '../../server/src/register'
+import { PLUGIN_ID } from '../../server/src/pluginId'
 import type { Core } from '@strapi/strapi'
 
 describe('register', () => {
@@ -113,4 +113,4 @@ describe('register', () => {
       inputSize: undefined,
     })
   })
-}) 
+})

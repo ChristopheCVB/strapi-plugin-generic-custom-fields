@@ -1,7 +1,18 @@
-import { describe, it, expect } from 'vitest'
-import config from '../config'
+import { describe, it, expect, expectTypeOf, vi } from 'vitest'
+import config, { type Config, type ItemResponse, type ItemsResponse } from '../../../server/src/config'
 
 describe('config validation', () => {
+  it('preserves inferred fetch callback signatures', () => {
+    type CustomField = Config['customFields'][number]
+
+    expectTypeOf<CustomField['fetchItems']>().toEqualTypeOf<
+      (params: { query?: string, locale?: string }, ...args: unknown[]) => ItemsResponse | Promise<ItemsResponse>
+    >()
+    expectTypeOf<CustomField['fetchItem']>().toEqualTypeOf<
+      (params: { value: string, locale?: string }, ...args: unknown[]) => ItemResponse | Promise<ItemResponse>
+    >()
+  })
+
   it('should validate a valid custom field configuration', () => {
     const validConfig = {
       customFields: [
@@ -34,6 +45,29 @@ describe('config validation', () => {
     }
 
     expect(() => config.validator(minimalConfig)).not.toThrow()
+  })
+
+  it('accepts asynchronous fetch callbacks without invoking them', () => {
+    const customField: Config['customFields'][number] = {
+      name: 'Async Field',
+      fetchItems: vi.fn(() => Promise.resolve({ items: [] })),
+      fetchItem: vi.fn(() => Promise.resolve({ value: 'test', label: 'Test' })),
+    }
+
+    expect(() => config.validator({ customFields: [customField] })).not.toThrow()
+    expect(customField.fetchItems).not.toHaveBeenCalled()
+    expect(customField.fetchItem).not.toHaveBeenCalled()
+  })
+
+  it.each(['fetchItems', 'fetchItem'])('rejects a non-function %s', (name) => {
+    const customField = {
+      name: 'Invalid Callback',
+      fetchItems: () => ({ items: [] }),
+      fetchItem: () => ({ value: 'test', label: 'Test' }),
+      [name]: 'not a function',
+    }
+
+    expect(() => config.validator({ customFields: [customField] })).toThrow()
   })
 
   it('should reject invalid icon values', () => {
@@ -127,4 +161,4 @@ describe('config validation', () => {
 
     expect(() => config.validator(invalidConfig)).toThrow('Each custom field name must be unique after slugification')
   })
-}) 
+})

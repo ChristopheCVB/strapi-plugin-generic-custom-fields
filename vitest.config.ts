@@ -1,15 +1,37 @@
 import { defineConfig } from 'vitest/config'
+import { playwright } from '@vitest/browser-playwright'
 
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'node',
-    include: ['server/src/__tests__/**/*.test.ts', 'admin/src/__tests__/**/*.test.ts'],
+    projects: [
+      {
+        test: {
+          name: 'server',
+          environment: 'node',
+          include: ['tests/server/**/*.test.ts'],
+        },
+      },
+      {
+        esbuild: { jsx: 'automatic' },
+        optimizeDeps: { include: ['react/jsx-dev-runtime', 'vitest-browser-react'] },
+        test: {
+          name: 'admin',
+          include: ['tests/admin/**/*.test.{ts,tsx}'],
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright(),
+            instances: [{ browser: 'chromium' }],
+          },
+        },
+      },
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['server/src/**/*.ts'],
-      exclude: ['server/src/__tests__/**/*.ts'],
+      include: ['server/src/**/*.ts', 'admin/src/**/*.{ts,tsx}'],
+      exclude: ['**/*.d.ts'],
     },
   },
-}) 
+})

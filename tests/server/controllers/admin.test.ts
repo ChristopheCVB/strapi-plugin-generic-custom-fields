@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import controller from '../../controllers/admin'
-import { PLUGIN_ID } from '../../pluginId'
+import controller from '../../../server/src/controllers/admin'
+import { PLUGIN_ID } from '../../../server/src/pluginId'
 import type { Core } from '@strapi/strapi'
 import type { Context } from 'koa'
-import type { Config } from '../../config'
+import type { Config } from '../../../server/src/config'
 
 describe('admin controller', () => {
   const mockStrapi = {
@@ -129,6 +129,15 @@ describe('admin controller', () => {
       vi.mocked(mockCustomFields[0].fetchItems).mockRejectedValue(error)
       await expect(adminController.customFieldItems(context)).rejects.toThrow('fetchItems error')
     })
+
+    it('rejects invalid fetchItems responses', async () => {
+      const adminController = controller({ strapi: mockStrapi })
+      vi.mocked(mockCustomFields[0].fetchItems).mockResolvedValueOnce({
+        items: [{ value: '', label: 'Invalid' }],
+      })
+
+      await expect(adminController.customFieldItems(mockContext)).rejects.toThrow()
+    })
   })
 
   describe('customFieldItem', () => {
@@ -145,6 +154,13 @@ describe('admin controller', () => {
       expect(result).toEqual({ value: 'test', label: 'Test' })
     })
 
+    it('rejects invalid fetchItem responses', async () => {
+      const adminController = controller({ strapi: mockStrapi })
+      vi.mocked(mockCustomFields[0].fetchItem).mockResolvedValueOnce({ value: '', label: 'Invalid' })
+
+      await expect(adminController.customFieldItem(mockContext)).rejects.toThrow()
+    })
+
     it('should throw 404 if field not found', async () => {
       const adminController = controller({ strapi: mockStrapi })
       const context = {
@@ -156,4 +172,4 @@ describe('admin controller', () => {
       await expect(adminController.customFieldItem(context)).rejects.toThrow(`Custom field plugin::${PLUGIN_ID}.non-existent-field not found`)
     })
   })
-}) 
+})

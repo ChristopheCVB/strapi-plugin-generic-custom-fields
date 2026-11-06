@@ -1,7 +1,7 @@
 import type { StrapiApp } from '@strapi/strapi/admin'
 import { describe, it, expect, vi } from 'vitest'
-import plugin from '../index'
-import { getTranslation } from '../utils/getTranslation'
+import plugin from '../../admin/src/index'
+import { getTranslation } from '../../admin/src/utils/getTranslation'
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }))
 
@@ -9,7 +9,7 @@ vi.mock('@strapi/strapi/admin', () => ({
   getFetchClient: () => ({ get }),
 }))
 
-vi.mock('../components/PluginIcon', () => ({ PluginIcon: () => null }))
+vi.mock('../../admin/src/components/PluginIcon', () => ({ PluginIcon: () => null }))
 
 describe('admin register', () => {
   it('exposes a native schema default alongside existing settings for every custom field', async () => {
