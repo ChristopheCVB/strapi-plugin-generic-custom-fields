@@ -32,6 +32,7 @@ updates:
           - "react-router-dom"
           - "styled-components"
           - "@types/koa"
+          - "@types/node"
           - "typescript"
         update-types:
           - "minor"

@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "noEmit": true,
+    "tsBuildInfoFile": "./.tmp/tests.tsbuildinfo"
+  },
+  "include": ["../tests/playground/**/*.ts", "types/**/*.d.ts"]
+}

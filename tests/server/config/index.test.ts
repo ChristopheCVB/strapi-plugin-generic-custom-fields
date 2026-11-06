@@ -1,8 +1,12 @@
 import { describe, it, expect, expectTypeOf, vi } from 'vitest'
 import config, { type Config, type ItemResponse, type ItemsResponse } from '../../../server/src/config'
+import type { Config as ExportedConfig, ItemResponse as ExportedItem, ItemsResponse as ExportedItems } from '../../../server/src'
 
 describe('config validation', () => {
   it('preserves inferred fetch callback signatures', () => {
+    expectTypeOf<ExportedConfig>().toEqualTypeOf<Config>()
+    expectTypeOf<ExportedItem>().toEqualTypeOf<ItemResponse>()
+    expectTypeOf<ExportedItems>().toEqualTypeOf<ItemsResponse>()
     type CustomField = Config['customFields'][number]
 
     expectTypeOf<CustomField['fetchItems']>().toEqualTypeOf<

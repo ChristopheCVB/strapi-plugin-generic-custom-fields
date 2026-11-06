@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This is a TypeScript plugin for Strapi v5. `admin/src/` contains React components, translation files, and admin registration. `server/src/` contains lifecycle hooks, routes, controllers, and Zod configuration schemas. Tests live in `tests/{project}/` and mirror paths and filenames within `{project}/src/`, including `index` files: `admin/src/components/Input.tsx` maps to `tests/admin/components/Input.test.tsx`, and `server/src/config/index.ts` maps to `tests/server/config/index.test.ts`. `assets/` holds the logo and preview images. Builds generate `dist/`; edit source files rather than generated output.
+This is a TypeScript plugin for Strapi v5. `admin/src/` contains React components, translation files, and admin registration. `server/src/` contains lifecycle hooks, routes, controllers, and Zod configuration schemas. Tests live in `tests/{project}/` and mirror paths and filenames within `{project}/src/`, including `index` files: `admin/src/components/Input.tsx` maps to `tests/admin/components/Input.test.tsx`, and `server/src/config/index.ts` maps to `tests/server/config/index.test.ts`. The private `playground/` pnpm workspace contains a Strapi app with exactly Page, Article, and Showcase collections; its field tests mirror `playground/config/` under `tests/playground/config/`. `assets/` holds the logo and preview images. Builds generate `dist/`; edit source files rather than generated output.
 
 ## Build, Test, and Development Commands
 
@@ -11,6 +11,9 @@ Run `mise trust` and `mise install` to provision Node 22 and enable Corepack. Us
 - `pnpm install --frozen-lockfile`: install dependencies from the committed lockfile.
 - `pnpm watch`: rebuild the plugin during development.
 - `pnpm watch:link`: run the SDK's linked development workflow with a consuming Strapi app.
+- `pnpm playground:dev`: build and run the in-repo Strapi app, restarting on plugin edits; first configure `playground/.env` as documented in its README.
+- `pnpm playground:build` / `pnpm playground:smoke`: build the app and plugin, then run the separate Vitest boot check with a disposable SQLite database and secrets.
+- `pnpm typecheck:playground`: check playground configuration and tests after building the plugin declarations.
 - `pnpm typecheck:admin` and `pnpm typecheck:server`: check admin and server TypeScript separately.
 - `pnpm lint` / `pnpm lint:fix`: check style or apply automatic fixes.
 - `pnpm test --run`: run the test suite once; `pnpm test:watch` reruns tests during development.
@@ -26,7 +29,7 @@ Follow `eslint.config.mjs`: two-space indentation, single quotes, no semicolons,
 
 ## Testing Guidelines
 
-Vitest has two projects: `server` discovers `tests/server/**/*.test.ts` in Node; `admin` discovers `tests/admin/**/*.test.{ts,tsx}` in real headless Chromium through Playwright. Both typechecks include their corresponding tests. Follow existing `describe` / `it` / `expect` patterns. Admin component tests use `vitest-browser-react`, real design-system controls, and mocked Strapi fetch/query hooks. Prefer browser locators and retrying assertions. Add regression tests for changed validation, registration, controller, or UI behavior. No numeric coverage threshold is configured. Manually exercise admin UI changes in a consuming Strapi app.
+Vitest's default projects are `server` (`tests/server/**/*.test.ts`, Node), `admin` (`tests/admin/**/*.test.{ts,tsx}`, real headless Chromium through Playwright), and `playground` (`tests/playground/{config,src}/**/*.test.ts`, Node). The separate `playground/vitest.smoke.config.ts` runs `tests/playground/smoke.test.ts` after a playground build. Each typecheck includes its corresponding tests. Follow existing `describe` / `it` / `expect` patterns. Admin component tests use `vitest-browser-react`, real design-system controls, and mocked Strapi fetch/query hooks. Prefer browser locators and retrying assertions. Add regression tests for changed validation, registration, controller, or UI behavior. No numeric coverage threshold is configured. Manually exercise admin UI changes in the playground.
 
 ## Dependency Management
 

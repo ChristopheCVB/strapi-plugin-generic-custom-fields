@@ -93,6 +93,20 @@ pnpm install --frozen-lockfile
 
 Mise installs Node 22 and enables Corepack, which selects the pnpm version declared in `package.json`.
 
+### Local playground
+
+The repository includes a private Strapi app in [`playground/`](playground/README.md), sharing the root install and lockfile. It uses the local plugin, SQLite, and offline Iconify data. See its README for the one-time `.env` setup, then run:
+
+```sh
+pnpm playground:dev
+```
+
+This builds the plugin and starts Strapi at http://127.0.0.1:1337/admin. Plugin edits automatically rebuild and restart the app. Register your own local admin account; Page, Article, and Showcase are ready to use without seeded content.
+
+The playground CI job builds and typechecks the app, tests its field sources, and boots it with a disposable database to check plugin registration, offline icons, HTTP health, and the admin page.
+
+### Checks
+
 ```sh
 pnpm typecheck:admin
 pnpm typecheck:server
@@ -106,10 +120,10 @@ pnpm build
 pnpm verify
 ```
 
-Tests live in `tests/server/` (Node) and `tests/admin/` (real Chromium through Playwright), mirroring paths and filenames within each project's `src/` directory. For example, `admin/src/components/Input.tsx` maps to `tests/admin/components/Input.test.tsx`, and `server/src/config/index.ts` maps to `tests/server/config/index.test.ts`. `pnpm test --run` runs both projects; use `--project server` or `--project admin` to select one. Both typechecks include their corresponding tests. Admin component tests render the real Strapi design-system controls and mock Strapi's fetch/query hooks.
+Tests live in `tests/server/` (Node), `tests/admin/` (real Chromium through Playwright), and `tests/playground/` (Node), mirroring their source paths. For example, `admin/src/components/Input.tsx` maps to `tests/admin/components/Input.test.tsx`, and `server/src/config/index.ts` maps to `tests/server/config/index.test.ts`. `pnpm test --run` runs all three projects; use `--project server`, `--project admin`, or `--project playground` to select one. Each project's typecheck includes its tests. Build the plugin before running `pnpm typecheck:playground` so its exported declarations are available. Admin component tests render the real Strapi design-system controls and mock Strapi's fetch/query hooks. The separate `pnpm playground:smoke` Vitest project boots the built app; run `pnpm playground:build` first.
 
 Chromium runs headless by default. Use `pnpm test --project admin --browser.headless=false` to debug in a visible browser. On Linux, install browser system dependencies with `pnpm exec playwright install --with-deps chromium` if needed. Run the browser installation command again after updating Playwright.
 
 `pnpm test:coverage` generates combined server and admin coverage in `coverage/`, with text, JSON, and HTML reports. Tests and test helpers are excluded; no minimum coverage threshold is enforced.
 
-Pull requests and releases share CI: setup, parallel typecheck/lint/server-test/admin-test jobs, then build and verify. Only the admin job installs Chromium and its system dependencies. It caches Playwright browsers by runner OS, architecture, and the installed Playwright version; system dependencies are installed on each fresh runner, including cache hits. Coverage remains a local command. The release job installs dependencies, builds, verifies, and publishes as before. Manual releases must target a tag.
+Pull requests and releases share CI: setup, parallel typecheck/lint/server-test/admin-test/playground jobs, then build and verify. Only the admin job installs Chromium and its system dependencies. It caches Playwright browsers by runner OS, architecture, and the installed Playwright version; system dependencies are installed on each fresh runner, including cache hits. Coverage remains a local command. The release job installs dependencies, builds, verifies, and publishes as before. Manual releases must target a tag.
