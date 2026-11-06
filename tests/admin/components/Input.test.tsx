@@ -3,9 +3,9 @@ import { DesignSystemProvider } from '@strapi/design-system'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { page, userEvent } from 'vitest/browser'
 import { render } from 'vitest-browser-react'
-import Input from '../../admin/src/components/Input'
-import { PLUGIN_ID } from '../../admin/src/pluginId'
-import type { ItemResponse } from '../../server/src/config'
+import Input from '../../../admin/src/components/Input'
+import { PLUGIN_ID } from '../../../admin/src/pluginId'
+import type { ItemResponse } from '../../../server/src/config'
 
 const { get, useQueryParams } = vi.hoisted(() => ({
   get: vi.fn(),

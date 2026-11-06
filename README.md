@@ -106,7 +106,7 @@ pnpm build
 pnpm verify
 ```
 
-Tests live in `tests/server/` (Node) and `tests/admin/` (real Chromium through Playwright). `pnpm test --run` runs both projects; use `--project server` or `--project admin` to select one. Both typechecks include their corresponding tests. Admin component tests render the real Strapi design-system controls and mock Strapi's fetch/query hooks.
+Tests live in `tests/server/` (Node) and `tests/admin/` (real Chromium through Playwright), mirroring paths and filenames within each project's `src/` directory. For example, `admin/src/components/Input.tsx` maps to `tests/admin/components/Input.test.tsx`, and `server/src/config/index.ts` maps to `tests/server/config/index.test.ts`. `pnpm test --run` runs both projects; use `--project server` or `--project admin` to select one. Both typechecks include their corresponding tests. Admin component tests render the real Strapi design-system controls and mock Strapi's fetch/query hooks.
 
 Chromium runs headless by default. Use `pnpm test --project admin --browser.headless=false` to debug in a visible browser. On Linux, install browser system dependencies with `pnpm exec playwright install --with-deps chromium` if needed. Run the browser installation command again after updating Playwright.
 

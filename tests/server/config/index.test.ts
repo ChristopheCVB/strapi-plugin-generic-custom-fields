@@ -1,5 +1,5 @@
 import { describe, it, expect, expectTypeOf, vi } from 'vitest'
-import config, { type Config, type ItemResponse, type ItemsResponse } from '../../server/src/config'
+import config, { type Config, type ItemResponse, type ItemsResponse } from '../../../server/src/config'
 
 describe('config validation', () => {
   it('preserves inferred fetch callback signatures', () => {

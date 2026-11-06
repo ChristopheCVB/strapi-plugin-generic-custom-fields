@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This is a TypeScript plugin for Strapi v5. `admin/src/` contains React components, translation files, and admin registration. `server/src/` contains lifecycle hooks, routes, controllers, and Zod configuration schemas. Tests live in `tests/server/` and `tests/admin/`, with server controller tests in a nested directory. `assets/` holds the logo and preview images. Builds generate `dist/`; edit source files rather than generated output.
+This is a TypeScript plugin for Strapi v5. `admin/src/` contains React components, translation files, and admin registration. `server/src/` contains lifecycle hooks, routes, controllers, and Zod configuration schemas. Tests live in `tests/{project}/` and mirror paths and filenames within `{project}/src/`, including `index` files: `admin/src/components/Input.tsx` maps to `tests/admin/components/Input.test.tsx`, and `server/src/config/index.ts` maps to `tests/server/config/index.test.ts`. `assets/` holds the logo and preview images. Builds generate `dist/`; edit source files rather than generated output.
 
 ## Build, Test, and Development Commands
 
