@@ -64,6 +64,19 @@ type Item = {
 ```
 This configuration allows you to define custom fields that can fetch items either synchronously or asynchronously. The `fetchItems` function is used to retrieve a list of items based on a query string that can be empty, while the `fetchItem` function retrieves a single item based on its value.
 
+### Advanced Settings
+
+When adding or editing a custom field in Strapi's Content-Type Builder, open **Advanced settings**. These settings are configured separately for each attribute and use Strapi's built-in behavior.
+
+| Setting | Description |
+| --- | --- |
+| **Default value** | Sets the default stored item value for new entries, including API creation when the field is omitted. |
+| **Required field** | Requires a value for the field when creating an entry. |
+| **Unique field** | Prevents entries from having the same stored item value, regardless of its label. |
+| **Private field** | Excludes the field from content API responses. |
+
+For **Default value**, use the item's stored `value`, not its `label`: for `{ value: 'FR', label: 'France' }`, enter `FR`. The default is saved as the attribute's top-level `default` in the content-type schema. The plugin does not backfill existing entries or validate the default against `fetchItem` when saving settings, so ensure the value can be resolved by your item source.
+
 ### Example Configuration
 
 Check Wiki page for [Example Implementations](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/wiki/Example-implementations)
