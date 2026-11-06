@@ -19,7 +19,46 @@ updates:
       include: "scope"
 
     groups:
-      npm-minor-patch:
+      strapi:
+        patterns:
+          - "@strapi/strapi"
+          - "@strapi/typescript-utils"
+          - "@strapi/design-system"
+          - "@strapi/icons"
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+          - "react-router-dom"
+          - "styled-components"
+          - "@types/koa"
+          - "typescript"
+        update-types:
+          - "minor"
+          - "patch"
+
+      testing:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+          - "vitest-browser-react"
+          - "playwright"
+        update-types:
+          - "minor"
+          - "patch"
+
+      linting:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "typescript-eslint"
+          - "@stylistic/*"
+          - "globals"
+        update-types:
+          - "minor"
+          - "patch"
+
+      internal:
         patterns:
           - "*"
         update-types:
@@ -44,7 +83,7 @@ updates:
       include: "scope"
 
     groups:
-      github-actions-minor-patch:
+      github-actions:
         patterns:
           - "*"
         update-types:

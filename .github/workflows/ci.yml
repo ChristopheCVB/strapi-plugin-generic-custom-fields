@@ -21,8 +21,8 @@ jobs:
       - uses: ./.github/actions/setup
       - name: Type check
         run: |
-          pnpm typecheck:front
-          pnpm typecheck:back
+          pnpm typecheck:admin
+          pnpm typecheck:server
 
   lint:
     needs: setup
@@ -33,17 +33,38 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-  test:
+  test-server:
     needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
-      - name: Test
-        run: pnpm test --run
+      - name: Test server
+        run: pnpm test --run --project server
+
+  test-admin:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: Resolve Playwright version
+        id: playwright
+        shell: bash
+        run: |
+          node -p "'version=' + require('playwright/package.json').version" >> "$GITHUB_OUTPUT"
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ steps.playwright.outputs.version }}
+      - name: Install Chromium and system dependencies
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Test admin
+        run: pnpm test --run --project admin
 
   build:
-    needs: [typecheck, lint, test]
+    needs: [typecheck, lint, test-server, test-admin]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

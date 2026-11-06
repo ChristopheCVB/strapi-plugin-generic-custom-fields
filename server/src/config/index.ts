@@ -198,14 +198,20 @@ const customFieldSchema = z.object({
     isResizable: z.boolean(),
   }).optional(),
   searchable: z.boolean().optional(),
-  fetchItems: z.function().args(z.object({
-    query: z.string().optional(),
-    locale: z.string().optional(),
-  })).returns(z.union([itemsResponseSchema, z.promise(itemsResponseSchema)])),
-  fetchItem: z.function().args(z.object({
-    value: z.string(),
-    locale: z.string().optional(),
-  })).returns(z.union([itemResponseSchema, z.promise(itemResponseSchema)])),
+  fetchItems: z.function({
+    input: z.tuple([z.object({
+      query: z.string().optional(),
+      locale: z.string().optional(),
+    })], z.unknown()),
+    output: z.union([itemsResponseSchema, z.promise(itemsResponseSchema)]),
+  }),
+  fetchItem: z.function({
+    input: z.tuple([z.object({
+      value: z.string(),
+      locale: z.string().optional(),
+    })], z.unknown()),
+    output: z.union([itemResponseSchema, z.promise(itemResponseSchema)]),
+  }),
 })
 
 const configSchema = z.object({

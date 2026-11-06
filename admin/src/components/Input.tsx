@@ -141,6 +141,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
         )
         setItems([response.data])
         setSelectedItem(response.data)
+      } else {
+        setItems([])
       }
     }
 

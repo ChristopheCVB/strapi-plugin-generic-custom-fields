@@ -94,12 +94,22 @@ pnpm install --frozen-lockfile
 Mise installs Node 22 and enables Corepack, which selects the pnpm version declared in `package.json`.
 
 ```sh
-pnpm typecheck:front
-pnpm typecheck:back
+pnpm typecheck:admin
+pnpm typecheck:server
 pnpm lint
+pnpm exec playwright install chromium
 pnpm test --run
+pnpm test --run --project server
+pnpm test --run --project admin
+pnpm test:coverage
 pnpm build
 pnpm verify
 ```
 
-Pull requests and releases share CI: setup, parallel typecheck/lint/test jobs, then build and verify. The release job installs dependencies, builds, verifies, and publishes as before. Manual releases must target a tag.
+Tests live in `tests/server/` (Node) and `tests/admin/` (real Chromium through Playwright). `pnpm test --run` runs both projects; use `--project server` or `--project admin` to select one. Both typechecks include their corresponding tests. Admin component tests render the real Strapi design-system controls and mock Strapi's fetch/query hooks.
+
+Chromium runs headless by default. Use `pnpm test --project admin --browser.headless=false` to debug in a visible browser. On Linux, install browser system dependencies with `pnpm exec playwright install --with-deps chromium` if needed. Run the browser installation command again after updating Playwright.
+
+`pnpm test:coverage` generates combined server and admin coverage in `coverage/`, with text, JSON, and HTML reports. Tests and test helpers are excluded; no minimum coverage threshold is enforced.
+
+Pull requests and releases share CI: setup, parallel typecheck/lint/server-test/admin-test jobs, then build and verify. Only the admin job installs Chromium and its system dependencies. It caches Playwright browsers by runner OS, architecture, and the installed Playwright version; system dependencies are installed on each fresh runner, including cache hits. Coverage remains a local command. The release job installs dependencies, builds, verifies, and publishes as before. Manual releases must target a tag.
