@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.6...v2.1.0) (2026-11-06)
+
+
+### Features
+
+* **admin:** support native default values for custom fields ([#277](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/277)) ([5fc9eb0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/5fc9eb0e56b5e9260c927ea94b8c55b2ff87dd75))
+
+
+### Bug Fixes
+
+* **ci:** use mise and run checks in parallel ([#272](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/272)) ([bc3b305](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/bc3b3051c313dcd282b5c03896f2ff38af51ccdd))
+* Update dependabot prefixes ([bfc1150](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/bfc1150e6bbcf302ea285e7fe501ce7a2581a85e))
+
 ## [2.0.6](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.5...v2.0.6) (2026-10-08)
 
 
