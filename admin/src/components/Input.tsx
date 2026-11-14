@@ -1,7 +1,7 @@
 import type { ItemsResponse, ItemResponse, Config } from '../../../server/src/config'
 import { type InputProps, useFetchClient, useQueryParams } from '@strapi/strapi/admin'
 
-import { ChangeEvent, forwardRef, useCallback, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import { Combobox, ComboboxOption, Field, TextInput, Loader } from '@strapi/design-system'
 import { useDebounce } from '@uidotdev/usehooks'
 import { styled } from 'styled-components'
@@ -46,7 +46,7 @@ const Icon = styled.span.withConfig({
   background-color: currentColor;
 `
 
-const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => {
+const FieldInput = forwardRef<HTMLInputElement, InputProps & { locale?: string }>((props, forwardedRef) => {
   const { get } = useFetchClient()
 
   // @ts-expect-error props is not fully typed
@@ -59,131 +59,89 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
     onChange: (event: { target: { name: string, value: string } }) => void
   }
 
-  // @ts-expect-error query.plugins is an object
-  const locale = useQueryParams()[0].query.plugins?.i18n?.locale as string | undefined
+  const { locale } = props
   
-  const [loading, setLoading] = useState<boolean>(true)
-  // const [page, setPage] = useState<number>(1)
-  // const [totalItems, setTotalItems] = useState<number | undefined>(undefined)
-  const [items, setItems] = useState<ItemsResponse['items'] | undefined>(undefined)
-  const [filter, setFilter] = useState<string>('')
-  const debouncedFilter = useDebounce(filter, 600)
-
-  const [customFieldConfig, setCustomFieldConfig] = useState<Pick<Config['customFields'][number], 'searchable'> | undefined>(undefined)
-  const [selectedItem, setSelectedItem] = useState<ItemResponse | undefined>(undefined)
-
-  const loadFieldConfig = useCallback(async (localCustomFieldUID: string) => {
-    const searchParams = new URLSearchParams()
-    if (locale) {
-      searchParams.set('locale', locale)
-    }
-    const response = await get<Pick<Config['customFields'][number], 'searchable'>>(
-      `/${PLUGIN_ID}/config/custom-fields/${localCustomFieldUID}?${searchParams.toString()}`,
-    )
-    setCustomFieldConfig(response.data)
-  }, [])
-
-  const loadItems = useCallback(async () => {
-    if (!customFieldConfig) {
-      return
-    }
-
-    setLoading(true)
-
-    if (!items || customFieldConfig.searchable/* || customFieldConfig!.paginateItems && items.length < totalItems!*/) {
-      if (!props.disabled) {
-        const searchParams = new URLSearchParams()
-        if (locale) {
-          searchParams.set('locale', locale)
-        }
-        if (customFieldConfig.searchable && debouncedFilter) {
-          searchParams.set('query', debouncedFilter)
-          // searchParams.set('page', '1')
-        }/* else if (customFieldConfig.paginateItems) {
-            searchParams.set('page', page.toString())
-          }*/
-        const response = await get<ItemsResponse>(
-          `/${PLUGIN_ID}/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
-        )
-        if (value && !response.data.items.find(item => item.value === value)) {
-          const searchParams = new URLSearchParams()
-          searchParams.set('value', value)
-          if (locale) {
-            searchParams.set('locale', locale)
-          }
-          const responseItem = await get<ItemResponse>(
-            `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?${searchParams.toString()}`,
-          )
-          response.data.items.unshift(responseItem.data)
-        }
-        setItems(response.data.items)
-        setSelectedItem(response.data.items.find(item => item.value === value))
-        // if (customFieldConfig.searchable && debouncedFilter) {
-        //   setTotalItems(response.data.items.length)
-        //   setItems(response.data.items)
-        // } else {
-        //   setTotalItems(response.data.total)
-        //   if (customFieldConfig.paginateItems && page > 1) {
-        //     setItems(prevItems => [...(prevItems ?? []), ...response.data.items])
-        //   }
-        //   else {
-        //     setItems(response.data.items)
-        //   }
-        // }
-      } else if (value) {
-        const searchParams = new URLSearchParams()
-        searchParams.set('value', value)
-        if (locale) {
-          searchParams.set('locale', locale)
-        }
-        const response = await get<ItemResponse>(
-          `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?${searchParams.toString()}`,
-        )
-        setItems([response.data])
-        setSelectedItem(response.data)
-      } else {
-        setItems([])
-      }
-    }
-
-    setLoading(false)
-  }, [
-    props.disabled,
-    customFieldConfig,
-    debouncedFilter,
-    locale,
-  ])
+  const [loading, setLoading] = useState(true)
+  const [items, setItems] = useState<ItemsResponse['items']>()
+  const [searchText, setSearchText] = useState<string | null>(null)
+  const [open, setOpen] = useState(false)
+  const [customFieldConfig, setCustomFieldConfig] = useState<Pick<Config['customFields'][number], 'searchable'>>()
+  const [selectedItem, setSelectedItem] = useState<ItemResponse>()
+  const filter = searchText ?? ''
+  const query = customFieldConfig?.searchable ? filter : ''
+  const debouncedQuery = useDebounce(query, 600)
+  const requestQuery = query && query !== debouncedQuery ? null : query
+  const selected = items?.find(item => item.value === value)
+    ?? (selectedItem?.value === value ? selectedItem : undefined)
+  const options = !query && selected && !items?.some(item => item.value === value)
+    ? [selected, ...(items ?? [])]
+    : items ?? []
 
   useEffect(() => {
-    loadFieldConfig(customFieldUID).catch((error) => {
+    let active = true
+    const searchParams = new URLSearchParams()
+    if (locale) searchParams.set('locale', locale)
+    get<Pick<Config['customFields'][number], 'searchable'>>(
+      `/${PLUGIN_ID}/config/custom-fields/${customFieldUID}?${searchParams.toString()}`,
+    ).then(response => {
+      if (active) setCustomFieldConfig(response.data)
+    }).catch((error) => {
       // eslint-disable-next-line no-console
       console.error(`Error fetching custom field config for CustomField[${customFieldUID}]:`, error)
     })
-  }, [
-    loadFieldConfig,
-    customFieldUID,
-  ])
+    return () => { active = false }
+  }, [get, customFieldUID, locale])
 
   useEffect(() => {
-    if (!customFieldConfig) {
+    if (!customFieldConfig) return
+    if (props.disabled) {
+      setItems([])
+      setLoading(false)
       return
     }
-    loadItems().catch((error) => {
+
+    let active = true
+    setLoading(true)
+    // Invalidate the previous request as soon as typing changes, before the debounce expires.
+    if (requestQuery === null) return
+    const searchParams = new URLSearchParams()
+    if (locale) searchParams.set('locale', locale)
+    if (requestQuery) searchParams.set('query', requestQuery)
+    get<ItemsResponse>(
+      `/${PLUGIN_ID}/custom-fields/${customFieldUID}/items?${searchParams.toString()}`,
+    ).then(response => {
+      if (active) setItems(response.data.items)
+    }).catch((error) => {
       // eslint-disable-next-line no-console
       console.error(`Error fetching items for CustomField[${customFieldUID}]:`, error)
+    }).finally(() => {
+      if (active) setLoading(false)
     })
-  }, [
-    loadItems,
-    customFieldConfig,
-  ])
+    return () => { active = false }
+  }, [get, customFieldConfig, customFieldUID, props.disabled, requestQuery, locale])
 
   useEffect(() => {
-    if (value) {
-      setSelectedItem(items?.find(item => item.value === value))
-    } else {
-      setSelectedItem(undefined)
+    if (!value || !items) return
+    const item = items.find(item => item.value === value)
+    if (item) {
+      setSelectedItem(item)
+      return
     }
-  }, [value, items])
+    if (selectedItem?.value === value) return
+
+    let active = true
+    const searchParams = new URLSearchParams({ value })
+    if (locale) searchParams.set('locale', locale)
+    get<ItemResponse>(
+      `/${PLUGIN_ID}/custom-fields/${customFieldUID}/item?${searchParams.toString()}`,
+    ).then(response => {
+      if (active) setSelectedItem(response.data)
+    }).catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error(`Error fetching item for CustomField[${customFieldUID}]:`, error)
+    })
+    return () => { active = false }
+  }, [get, customFieldUID, value, items, selectedItem, locale])
 
   return (
     <Field.Root required={props.required} hint={props.hint} name={props.name} id={props.name} error={error ?? undefined} >
@@ -192,30 +150,54 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
         (<Combobox
           key={`${props.name}-combobox`}
           ref={forwardedRef}
-          onChange={(newValue: string) => onChange({ target: { name: props.name, value: newValue ?? '' } })}
-          defaultTextValue={selectedItem?.label || value || undefined}
+          onChange={(newValue) => {
+            if (!newValue || newValue === value) return
+            setSelectedItem(items.find(item => item.value === newValue))
+            setSearchText(null)
+            onChange({ target: { name: props.name, value: newValue } })
+          }}
+          textValue={searchText ?? selected?.label ?? value ?? ''}
+          open={open}
+          onOpenChange={(nextOpen) => {
+            setOpen(nextOpen)
+            if (!nextOpen) setSearchText(null)
+          }}
+          onBlur={(event) => {
+            // The primitive otherwise commits matching text or clears a missing selection on blur.
+            event.preventDefault()
+            if (event.relatedTarget instanceof HTMLElement && event.relatedTarget.closest('[role="option"]')) return
+            setOpen(false)
+            setSearchText(null)
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') {
+              event.preventDefault()
+              setOpen(false)
+              setSearchText(null)
+            }
+          }}
           value={value ?? ''}
           placeholder={props.placeholder}
           disabled={props.disabled}
           loading={loading}
-          autocomplete={{ type: 'list', filter: 'contains' }}
-          onInputChange={(ev: ChangeEvent<HTMLInputElement>) => setFilter(ev.target.value)}
-          filterValue={customFieldConfig?.searchable ? '' : undefined}
-          // hasMoreItems={totalItems && totalItems > (items?.length ?? 0)}
-          // onLoadMore={() => setPage(prevPage => prevPage + 1)}
+          autocomplete={!customFieldConfig?.searchable && filter ? { type: 'list', filter: 'contains' } : 'none'}
+          onInputChange={event => setSearchText(event.target.value)}
           startIcon={
-            selectedItem?.icon ?
-              <Icon src={selectedItem.icon.src} colorMask={selectedItem.icon.colorMask} />
+            selected?.icon ?
+              <Icon src={selected.icon.src} colorMask={selected.icon.colorMask} />
               : null
           }
           onClear={
             props.disabled ?
               undefined :
-              () => onChange({ target: { name: props.name, value: '' } })
+              () => {
+                setSearchText(null)
+                onChange({ target: { name: props.name, value: '' } })
+              }
           }
         >
           {
-            items.map(item => {
+            options.map(item => {
               return (
                 <ComboboxOption
                   key={item.value}
@@ -234,6 +216,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => 
       <Field.Error />
     </Field.Root>
   )
+})
+
+const Input = forwardRef<HTMLInputElement, InputProps>((props, forwardedRef) => {
+  // @ts-expect-error query.plugins is an object
+  const locale = useQueryParams()[0].query.plugins?.i18n?.locale as string | undefined
+  const { attribute } = props as InputProps & { attribute: { customField: string } }
+
+  // Options and pending requests belong to one field and locale.
+  return <FieldInput {...props} locale={locale} ref={forwardedRef} key={JSON.stringify([attribute.customField, locale])} />
 })
 
 export default Input
