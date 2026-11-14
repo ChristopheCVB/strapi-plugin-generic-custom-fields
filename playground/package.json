@@ -11,7 +11,7 @@
     "smoke": "vitest run --config vitest.smoke.config.ts"
   },
   "dependencies": {
-    "@iconify/json": "2.2.553",
+    "@iconify/json": "2.2.554",
     "@iconify/utils": "^3.1.7",
     "@strapi/strapi": "5.61.0",
     "better-sqlite3": "13.0.3",
