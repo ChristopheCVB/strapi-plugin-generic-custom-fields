@@ -7,6 +7,7 @@
     "build": "strapi build",
     "start": "strapi start",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json",
+    "types:generate": "strapi ts:generate-types",
     "smoke": "vitest run --config vitest.smoke.config.ts"
   },
   "dependencies": {
