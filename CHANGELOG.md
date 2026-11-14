@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.1](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.1.0...v2.1.1) (2026-11-14)
+
+
+### Bug Fixes
+
+* **admin:** preserve custom field options and refresh localized selections ([#282](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/282)) ([4ce449c](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/4ce449c85bb8e7c90d4aec7949dd2e7cc0e8779b))
+* **deps:** bump @iconify/json from 2.2.553 to 2.2.554 in the internal group ([#281](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/issues/281)) ([0497c33](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/commit/0497c33a7aae73224112b7f646d9958ff2e48a07))
+
 ## [2.1.0](https://github.com/ChristopheCVB/strapi-plugin-generic-custom-fields/compare/v2.0.6...v2.1.0) (2026-11-06)
 
 
