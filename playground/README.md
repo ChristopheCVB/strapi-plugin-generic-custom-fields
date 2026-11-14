@@ -38,10 +38,10 @@ There are exactly three collections:
 The three registered custom fields adapt [ndsuv's configuration](https://github.com/ChristopheCVB/ndsuv/tree/main/back/config/plugins/generic-custom-fields):
 
 - **Iconify Icon** searches the complete installed Iconify catalogue offline. Empty search shows collection samples; searches return up to 64 matches with SVG previews. The catalogue loads lazily on first search. Its npm package occupies about 642 MB unpacked.
-- **Internal Document** queries published Pages and Articles by title and resolves their saved paths. Root options `/` and `/articles` are always available. Drafts do not appear. A deleted or unpublished selection keeps its stored path visible.
+- **Internal Document** queries published Pages and Articles by title and resolves their saved paths. Searches and saved-path lookups use the active content locale; when no locale is supplied, Strapi uses its configured default. Documents without a published version in that locale do not appear. Root options `/` and `/articles` are always available: explicit French locales (including regional variants) use Accueil / Articles; other or absent locales use Home / Articles. A missing, deleted, or unpublished selection keeps its stored path visible, without falling back to another language. Values remain paths without locale prefixes; translated slugs must be selected explicitly.
 - **Link Target** offers `_self` (Same window) and `_blank` (New window). Its Showcase attribute is required and defaults to `_self`.
 
-Create a Page and an Article manually and publish them. Create a Showcase, search for their titles, choose an icon and link target, save, and reopen it. Verify icons and selected labels survive reopening. An unknown saved Link Target keeps its raw value visible.
+Enable a second locale in Settings → Internationalization, then create and publish a Page and an Article in both locales. Keep another translation as a draft to verify it is excluded. Create a Showcase, search for their titles, choose an icon and link target, save, and reopen it. Switch Showcase locales and check that document options and labels refresh without changing saved paths. Verify icons and selected labels survive reopening. An unknown saved Link Target keeps its raw value visible.
 
 To check advanced settings, confirm `_self` is preselected, clearing the required Link Target prevents saving, and reusing a Unique Icon across entries is rejected. Private Icon remains visible to administrators and is excluded by Strapi's content-API serialization; the playground does not enable public content access automatically.
 
@@ -53,10 +53,13 @@ Run these from the repository root:
 pnpm playground:dev       # Build, develop, and restart automatically on plugin source edits
 pnpm playground:build     # Build plugin declarations/bundles, then the Strapi app
 pnpm typecheck:playground # Requires a preceding plugin build
+pnpm --dir playground types:generate # Regenerate committed schema declarations
 pnpm test --run --project playground
 pnpm playground:smoke     # Requires playground:build; uses a temporary database and random secrets
 pnpm playground:start     # Serve a preceding playground:build
 ```
+
+The schema declarations in `playground/types/generated/` are committed so clean checkouts can typecheck document-service calls. After changing playground schemas or the resolved Strapi version, build the plugin, run `pnpm --dir playground types:generate`, and commit the generated changes. Preserve Strapi's generated formatting; do not edit these declarations manually.
 
 Plugin source edits trigger a complete rebuild and restart, so unsaved admin forms may be lost. Strapi watches its own configuration and content-type sources. The playground Vite configuration works around Strapi 5.61's Prism grammar initialization order and prebundles the plugin's admin dependencies. Root and playground Node type pins match Strapi to keep pnpm's admin dependency graph shared.
 
@@ -64,4 +67,4 @@ Build errors leave the watcher running; fix the source to trigger another build.
 
 The SQLite database defaults to `playground/.tmp/data.db` and persists between sessions. To reset it, stop the app and delete that file and any matching `-wal`/`-shm` files. This deletes local content and administrator accounts. Upload files remain under `playground/public/uploads/`; delete them separately if needed.
 
-The smoke command runs a separate Vitest project and requests admin HTML without executing browser JavaScript. It never uses the development database or creates an admin account or entries. It checks the three collection schemas, field registration and callbacks, offline icon search, HTTP health, and the built admin page, then closes Strapi and removes its temporary database. CI runs it after the playground build and focused field tests. Browser interaction remains a manual check.
+The smoke command runs a separate Vitest project and requests admin HTML without executing browser JavaScript. It never uses the development database or creates an admin account. Locale and document fixtures are created only in its disposable database. It checks the three collection schemas, field registration and callbacks, published-document locale isolation and default-locale behavior, offline icon search, HTTP health, and the built admin page, then closes Strapi and removes its temporary database. CI runs it after the playground build and focused field tests. Browser interaction remains a manual check.

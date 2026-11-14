@@ -4,8 +4,8 @@ import { getIconifyPreview } from './utils/iconify'
 
 declare const strapi: Core.Strapi
 
-const roots: ItemResponse[] = [
-  { value: '/', label: '(/) Home', icon: getIconifyPreview('mdi', 'home') },
+const getRoots = (locale?: string): ItemResponse[] => [
+  { value: '/', label: `(/) ${locale?.split('-')[0] === 'fr' ? 'Accueil' : 'Home'}`, icon: getIconifyPreview('mdi', 'home') },
   { value: '/articles', label: '(/articles) Articles', icon: getIconifyPreview('material-symbols', 'newspaper') },
 ]
 
@@ -26,11 +26,12 @@ export default {
   description: 'A published Page or Article',
   icon: 'Paperclip',
   searchable: true,
-  async fetchItems({ query }) {
+  async fetchItems({ query, locale }) {
+    const roots = getRoots(locale)
     const filters = query ? { title: { $containsi: query } } : {}
     const [pages, articles] = await Promise.all([
-      strapi.documents('api::page.page').findMany({ filters, status: 'published' }),
-      strapi.documents('api::article.article').findMany({ filters, status: 'published' }),
+      strapi.documents('api::page.page').findMany({ filters, status: 'published', locale }),
+      strapi.documents('api::article.article').findMany({ filters, status: 'published', locale }),
     ])
     return {
       items: [
@@ -41,14 +42,15 @@ export default {
       ],
     }
   },
-  async fetchItem({ value }) {
-    const root = roots.find(item => item.value === value)
+  async fetchItem({ value, locale }) {
+    const root = getRoots(locale).find(item => item.value === value)
     if (root) return root
 
     if (value.startsWith('/articles/')) {
       const article = await strapi.documents('api::article.article').findFirst({
         filters: { slug: value.slice('/articles/'.length) },
         status: 'published',
+        locale,
       })
       return article ? articleItem(article) : { value, label: value }
     }
@@ -56,6 +58,7 @@ export default {
     const page = await strapi.documents('api::page.page').findFirst({
       filters: { slug: value.replace(/^\//, '') },
       status: 'published',
+      locale,
     })
     return page ? pageItem(page) : { value, label: value }
   },

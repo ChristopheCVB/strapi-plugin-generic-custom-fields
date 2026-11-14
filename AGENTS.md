@@ -14,6 +14,7 @@ Run `mise trust` and `mise install` to provision Node 22 and enable Corepack. Us
 - `pnpm playground:dev`: build and run the in-repo Strapi app, restarting on plugin edits; first configure `playground/.env` as documented in its README.
 - `pnpm playground:build` / `pnpm playground:smoke`: build the app and plugin, then run the separate Vitest boot check with a disposable SQLite database and secrets.
 - `pnpm typecheck:playground`: check playground configuration and tests after building the plugin declarations.
+- `pnpm --dir playground types:generate`: regenerate the committed schema declarations after building the plugin. Regenerate and commit `playground/types/generated/` whenever playground schemas or the resolved Strapi version change; preserve generated formatting and do not edit declarations manually.
 - `pnpm typecheck:admin` and `pnpm typecheck:server`: check admin and server TypeScript separately.
 - `pnpm lint` / `pnpm lint:fix`: check style or apply automatic fixes.
 - `pnpm test --run`: run the test suite once; `pnpm test:watch` reruns tests during development.

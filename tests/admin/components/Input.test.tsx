@@ -143,6 +143,36 @@ describe('Input in Chromium', () => {
     await expect.element(page.getByRole('option', { name: 'Spain' })).toBeVisible()
   })
 
+  it('finds a separately fetched saved item in local search', async () => {
+    const onChange = vi.fn()
+    await render(<TestField initialValue="ES" onChange={onChange} />)
+    const input = page.getByRole('combobox', { name: 'Country' })
+    await expect.element(input).toHaveValue('Spain')
+    await input.click()
+    await input.fill('Spa')
+    await expect.element(page.getByRole('option', { name: 'Spain' })).toBeVisible()
+    await expect.element(page.getByRole('option', { name: 'France' })).not.toBeInTheDocument()
+    await userEvent.keyboard('{Escape}')
+    await expect.element(input).toHaveValue('Spain')
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
+  it.each([false, true])('refreshes a separately fetched saved label when locale changes (disabled: %s)', async (disabled) => {
+    const originalGet = get.getMockImplementation()!
+    get.mockImplementation((path: string) => path.includes(`${itemPath}?`)
+      ? Promise.resolve({ data: { value: 'ES', label: path.includes('locale=fr') ? 'Espagne' : 'Spain' } })
+      : originalGet(path))
+    const onChange = vi.fn()
+    const screen = await render(<TestField initialValue="ES" disabled={disabled} onChange={onChange} />)
+    const input = page.getByRole('combobox', { name: 'Country' })
+    await expect.element(input).toHaveValue('Spain')
+    useQueryParams.mockReturnValue([{ query: { plugins: { i18n: { locale: 'fr' } } } }])
+    await screen.rerender(<TestField initialValue="ES" disabled={disabled} onChange={onChange} />)
+    await expect.element(input).toHaveValue('Espagne')
+    expect(get).toHaveBeenCalledWith(`${itemPath}?value=ES&locale=fr`)
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
   it('sends debounced search text and the initial locale to the items endpoint', async () => {
     searchable = true
     useQueryParams.mockReturnValue([{ query: { plugins: { i18n: { locale: 'fr' } } } }])
@@ -173,6 +203,126 @@ describe('Input in Chromium', () => {
       expect(get).toHaveBeenCalledTimes(2)
       return performance.now() - start
     }).toBeGreaterThanOrEqual(600)
+  })
+
+  it.each([false, true])('browses alternatives to saved and newly selected values (searchable: %s)', async (serverSearch) => {
+    searchable = serverSearch
+    const onChange = vi.fn()
+    await render(<TestField initialValue="FR" onChange={onChange} />)
+    const input = page.getByRole('combobox', { name: 'Country' })
+    await expect.element(input).toHaveValue('France')
+    await input.click()
+    await expect.element(page.getByRole('option', { name: 'Germany' })).toBeVisible()
+    expect(onChange).not.toHaveBeenCalled()
+    await page.getByRole('option', { name: 'Germany' }).click()
+    await expect.element(input).toHaveValue('Germany')
+    await userEvent.keyboard('{ArrowDown}')
+    await expect.element(page.getByRole('option', { name: 'France' })).toBeVisible()
+    await userEvent.keyboard('{Enter}')
+    await expect.element(input).toHaveValue('France')
+    expect(onChange).toHaveBeenLastCalledWith({ target: { name: 'country', value: 'FR' } })
+  })
+
+  it.each([false, true])('cancels searches and preserves the saved label and icon (searchable: %s)', async (serverSearch) => {
+    searchable = serverSearch
+    items[0].icon = { src: `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"/>')}`, colorMask: true }
+    const onChange = vi.fn()
+    const screen = await render(<TestField initialValue="FR" onChange={onChange} />)
+    const input = page.getByRole('combobox', { name: 'Country' })
+    await expect.element(input).toHaveValue('France')
+    const icon = screen.container.querySelector('span[style*="data:image"]')
+    expect(icon).not.toBeNull()
+
+    for (const dismiss of ['escape', 'outside', 'blur']) {
+      await input.click()
+      await input.fill('Ger')
+      await expect.element(page.getByRole('option', { name: 'Germany' })).toBeVisible()
+      await expect.element(page.getByRole('option', { name: 'France' })).not.toBeInTheDocument()
+      expect(icon?.isConnected).toBe(true)
+      if (dismiss === 'escape') await userEvent.keyboard('{Escape}')
+      else if (dismiss === 'outside') await page.getByText('Country', { exact: true }).click()
+      else input.element().blur()
+      await expect.element(input).toHaveValue('France')
+      await input.click()
+      await expect.element(page.getByRole('option', { name: 'France' })).toBeVisible()
+      await expect.element(page.getByRole('option', { name: 'Germany' })).toBeVisible()
+      await userEvent.keyboard('{Escape}')
+    }
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
+  it.each([false, true])('keeps a saved value through empty searches and empty results (searchable: %s)', async (serverSearch) => {
+    searchable = serverSearch
+    const onChange = vi.fn()
+    await render(<TestField initialValue="FR" onChange={onChange} />)
+    const input = page.getByRole('combobox', { name: 'Country' })
+    await expect.element(input).toHaveValue('France')
+    await input.click()
+    await userEvent.keyboard('{End}G')
+    await expect.element(input).toHaveValue('FranceG')
+    await input.fill('no match')
+    await expect.element(page.getByText('No results found')).toBeVisible()
+    await expect.element(page.getByRole('option')).not.toBeInTheDocument()
+    await userEvent.keyboard('{Escape}')
+    await expect.element(input).toHaveValue('France')
+    await input.click()
+    await input.fill('')
+    await expect.element(page.getByRole('option', { name: 'Germany' })).toBeVisible()
+    await userEvent.keyboard('{Escape}')
+    await expect.element(input).toHaveValue('France')
+    // Escape on an already closed field must not invoke the primitive's clear behavior.
+    await userEvent.keyboard('{Escape}')
+    expect(onChange).not.toHaveBeenCalled()
+    await page.getByRole('button', { name: 'Clear' }).click()
+    expect(onChange).toHaveBeenLastCalledWith({ target: { name: 'country', value: '' } })
+  })
+
+  it('uses server results without applying a second label filter', async () => {
+    searchable = true
+    const originalGet = get.getMockImplementation()!
+    get.mockImplementation((path: string) => path.includes('query=alias')
+      ? Promise.resolve({ data: { items: [items[1]] } })
+      : originalGet(path))
+    await render(<TestField initialValue="FR" />)
+    const input = page.getByRole('combobox', { name: 'Country' })
+    await input.click()
+    await input.fill('alias')
+    await expect.element(page.getByRole('option', { name: 'France' })).not.toBeInTheDocument()
+    await expect.element(page.getByRole('option', { name: 'Germany' })).toBeVisible()
+    await page.getByRole('option', { name: 'Germany' }).click()
+    await expect.element(input).toHaveValue('Germany')
+  })
+
+  it('ignores late responses after a new search and after cancellation', async () => {
+    searchable = true
+    const oldSearch = Promise.withResolvers<{ data: { items: ItemResponse[] } }>()
+    const cancelledSearch = Promise.withResolvers<{ data: { items: ItemResponse[] } }>()
+    const originalGet = get.getMockImplementation()!
+    get.mockImplementation((path: string) => {
+      if (path.includes('query=old')) return oldSearch.promise
+      if (path.includes('query=cancel')) return cancelledSearch.promise
+      return originalGet(path)
+    })
+    await render(<TestField initialValue="FR" />)
+    const input = page.getByRole('combobox', { name: 'Country' })
+    await input.click()
+    await input.fill('old')
+    await expect.poll(() => get.mock.calls.some(([path]) => path.includes('query=old'))).toBe(true)
+    await input.fill('Ger')
+    await expect.poll(() => get.mock.calls.some(([path]) => path.includes('query=Ger'))).toBe(true)
+    await expect.element(page.getByRole('option', { name: 'France' })).not.toBeInTheDocument()
+    oldSearch.resolve({ data: { items: [] } })
+    await userEvent.keyboard('{ArrowDown}')
+    await expect.element(page.getByRole('option', { name: 'Germany' })).toBeVisible()
+    await input.fill('cancel')
+    await expect.poll(() => get.mock.calls.some(([path]) => path.includes('query=cancel'))).toBe(true)
+    await userEvent.keyboard('{Escape}')
+    await expect.element(input).toHaveValue('France')
+    await input.click()
+    await expect.element(page.getByRole('option', { name: 'France' })).toBeVisible()
+    cancelledSearch.resolve({ data: { items: [] } })
+    await userEvent.keyboard('{ArrowDown}')
+    await expect.element(page.getByRole('option', { name: 'Germany' })).toBeVisible()
   })
 
   it('shows an empty-results message when there are no options', async () => {

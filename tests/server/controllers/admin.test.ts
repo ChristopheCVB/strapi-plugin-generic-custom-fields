@@ -97,16 +97,16 @@ describe('admin controller', () => {
       expect(result).toEqual({ items: [] })
     })
 
-    it('should pass query parameter to fetchItems', async () => {
+    it('should pass query and locale parameters to fetchItems', async () => {
       const adminController = controller({ strapi: mockStrapi })
       const context = {
         ...mockContext,
-        request: { query: { query: 'test' } },
+        request: { query: { query: 'test', locale: 'fr' } },
       } as unknown as Context
 
       await adminController.customFieldItems(context)
 
-      expect(mockCustomFields[0].fetchItems).toHaveBeenCalledWith({ query: 'test' })
+      expect(mockCustomFields[0].fetchItems).toHaveBeenCalledWith({ query: 'test', locale: 'fr' })
     })
 
     it('should throw 404 if field not found', async () => {
@@ -152,6 +152,18 @@ describe('admin controller', () => {
 
       expect(mockCustomFields[0].fetchItem).toHaveBeenCalledWith({ value: 'test' })
       expect(result).toEqual({ value: 'test', label: 'Test' })
+    })
+
+    it('should pass locale to fetchItem', async () => {
+      const adminController = controller({ strapi: mockStrapi })
+      const context = {
+        ...mockContext,
+        request: { query: { value: 'test', locale: 'fr' } },
+      } as unknown as Context
+
+      await adminController.customFieldItem(context)
+
+      expect(mockCustomFields[0].fetchItem).toHaveBeenCalledWith({ value: 'test', locale: 'fr' })
     })
 
     it('rejects invalid fetchItem responses', async () => {

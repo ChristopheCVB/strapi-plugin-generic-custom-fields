@@ -53,6 +53,48 @@ it('boots the built playground with three fields, three collections, offline ico
     for (const value of ['/missing', '/articles/missing']) {
       expect(await documents.fetchItem({ value })).toEqual({ value, label: value })
     }
+
+    const locales = app.plugin('i18n').service('locales')
+    await locales.create({ code: 'fr', name: 'French (fr)' })
+    for (const [uid, type, prefix] of [
+      ['api::page.page', 'page', '/'],
+      ['api::article.article', 'article', '/articles/'],
+    ] as const) {
+      const published = await app.documents(uid).create({
+        locale: 'en', status: 'published', data: { title: `English ${type}`, slug: `${type}-en` },
+      })
+      await app.documents(uid).update({
+        documentId: published.documentId, locale: 'fr', status: 'published',
+        data: { title: `French ${type}`, slug: `${type}-fr` },
+      })
+      const untranslated = await app.documents(uid).create({
+        locale: 'en', status: 'published', data: { title: `Untranslated ${type}`, slug: `${type}-draft-en` },
+      })
+      await app.documents(uid).update({
+        documentId: untranslated.documentId, locale: 'fr', status: 'draft',
+        data: { title: `French draft ${type}`, slug: `${type}-draft-fr` },
+      })
+      expect((await documents.fetchItem({ value: `${prefix}${type}-fr`, locale: 'fr' })).label)
+        .toBe(`(${prefix}${type}-fr) French ${type}`)
+      for (const slug of [`${type}-en`, `${type}-draft-fr`]) {
+        const value = `${prefix}${slug}`
+        expect(await documents.fetchItem({ value, locale: 'fr' })).toEqual({ value, label: value })
+      }
+    }
+    expect((await documents.fetchItems({ locale: 'en' })).items.map(item => item.value)).toEqual([
+      '/', '/page-draft-en', '/page-en', '/articles', '/articles/article-draft-en', '/articles/article-en',
+    ])
+    const frenchPaths = ['/', '/page-fr', '/articles', '/articles/article-fr']
+    expect((await documents.fetchItems({ locale: 'fr' })).items.map(item => item.value)).toEqual(frenchPaths)
+    expect((await documents.fetchItems({ locale: 'fr', query: 'English' })).items.map(item => item.value))
+      .toEqual(['/', '/articles'])
+    await locales.setDefaultLocale({ code: 'fr' })
+    expect((await documents.fetchItems({})).items.map(item => item.value)).toEqual(frenchPaths)
+    expect((await documents.fetchItems({})).items[0].label).toBe('(/) Home')
+    expect((await documents.fetchItem({ value: '/page-fr' })).label).toBe('(/page-fr) French page')
+    expect((await documents.fetchItem({ value: '/articles/article-fr' })).label)
+      .toBe('(/articles/article-fr) French article')
+
     expect((await icons.fetchItems({})).items.length).toBeGreaterThan(0)
     const search = await icons.fetchItems({ query: 'mdi:home' })
     expect(search.items.length).toBeGreaterThan(0)

@@ -9,34 +9,70 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
   "attributes": {
     "title": {
       "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
       "required": true
     },
     "icon": {
       "type": "customField",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
       "customField": "plugin::generic-custom-fields.iconify-icon"
     },
     "internalDocument": {
       "type": "customField",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
       "customField": "plugin::generic-custom-fields.internal-document"
     },
     "linkTarget": {
       "type": "customField",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
       "customField": "plugin::generic-custom-fields.link-target",
       "default": "_self",
       "required": true
     },
     "uniqueIcon": {
       "type": "customField",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
       "customField": "plugin::generic-custom-fields.iconify-icon",
       "unique": true
     },
     "privateIcon": {
       "type": "customField",
-      "customField": "plugin::generic-custom-fields.iconify-icon",
-      "private": true
+      "private": true,
+      "searchable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "customField": "plugin::generic-custom-fields.iconify-icon"
     }
   }
 }
