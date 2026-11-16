@@ -75,8 +75,8 @@
     "typecheck:playground": "pnpm --dir playground typecheck"
   },
   "dependencies": {
-    "@strapi/design-system": "2.3.0",
-    "@strapi/icons": "2.3.0",
+    "@strapi/design-system": "2.3.1",
+    "@strapi/icons": "2.3.1",
     "@uidotdev/usehooks": "^2.4.1",
     "slugify": "^1.6.9",
     "zod": "^4.6.7"
@@ -84,8 +84,8 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@strapi/sdk-plugin": "^6.1.1",
-    "@strapi/strapi": "^5.61.0",
-    "@strapi/typescript-utils": "^5.61.0",
+    "@strapi/strapi": "^5.62.0",
+    "@strapi/typescript-utils": "^5.62.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/koa": "2.15.2",
     "@types/node": "22.20.0",
@@ -100,7 +100,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "6.30.6",
-    "styled-components": "6.6.0",
+    "styled-components": "6.4.1",
     "typescript": "5.9.3",
     "typescript-eslint": "^8.72.1",
     "vitest": "^5.1.0",

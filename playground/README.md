@@ -1,6 +1,6 @@
 # Plugin playground
 
-A local Strapi 5.61.0 app consuming the plugin through a pnpm workspace link. Install dependencies once from the repository root using the pinned pnpm version. No Docker or external API is required.
+A local Strapi 5.62.0 app consuming the plugin through a pnpm workspace link. Install dependencies once from the repository root using the pinned pnpm version. No Docker or external API is required.
 
 ## First launch
 
@@ -43,7 +43,7 @@ The three registered custom fields adapt [ndsuv's configuration](https://github.
 
 Enable a second locale in Settings → Internationalization, then create and publish a Page and an Article in both locales. Keep another translation as a draft to verify it is excluded. Create a Showcase, search for their titles, choose an icon and link target, save, and reopen it. Switch Showcase locales and check that document options and labels refresh without changing saved paths. Verify icons and selected labels survive reopening. An unknown saved Link Target keeps its raw value visible.
 
-To check advanced settings, confirm `_self` is preselected, clearing the required Link Target prevents saving, and reusing a Unique Icon across entries is rejected. Private Icon remains visible to administrators and is excluded by Strapi's content-API serialization; the playground does not enable public content access automatically.
+To check advanced settings, confirm `_self` is preselected, clearing the required Link Target prevents publishing, and reusing a Unique Icon across entries is rejected. Private Icon remains visible to administrators and is excluded by Strapi's content-API serialization; the playground does not enable public content access automatically.
 
 ## Commands
 
