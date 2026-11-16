@@ -13,17 +13,17 @@
   "dependencies": {
     "@iconify/json": "2.2.555",
     "@iconify/utils": "^3.1.7",
-    "@strapi/strapi": "5.61.0",
+    "@strapi/strapi": "5.61.1",
     "better-sqlite3": "13.0.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "6.30.6",
     "strapi-plugin-generic-custom-fields": "workspace:*",
-    "styled-components": "6.4.1"
+    "styled-components": "6.6.0"
   },
   "devDependencies": {
     "@iconify/types": "^2.0.0",
-    "@strapi/typescript-utils": "5.61.0",
+    "@strapi/typescript-utils": "5.61.1",
     "@types/node": "22.20.0",
     "@types/react": "18.3.2",
     "@types/react-dom": "18.3.0",
