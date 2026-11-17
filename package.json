@@ -88,7 +88,7 @@
     "@strapi/typescript-utils": "^5.62.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/koa": "2.15.2",
-    "@types/node": "22.20.0",
+    "@types/node": "26.6.6",
     "@types/react": "18.3.2",
     "@types/react-dom": "18.3.0",
     "@vitest/browser-playwright": "^5.1.0",
